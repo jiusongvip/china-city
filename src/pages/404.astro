@@ -1,0 +1,39 @@
+---
+import '@fontsource-variable/outfit';
+import '@fontsource-variable/manrope';
+import '../styles/global.css';
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+    <title>Page not found - China City Explorer</title>
+    <meta name="description" content="The page you were looking for could not be found." />
+    <meta name="robots" content="noindex" />
+  </head>
+  <body>
+    <main id="top">
+      <section class="section-pad pt-24 lg:pt-32">
+        <div class="page-shell">
+          <p class="eyebrow mb-6">404</p>
+          <h1 class="max-w-[720px] text-5xl md:text-7xl">That page is not here.</h1>
+          <p class="mt-6 max-w-[560px] text-base leading-7 text-[#6b6a65]">
+            The link may have moved, or the address may be mistyped. Head back to the single-page
+            guide and jump straight to a section below.
+          </p>
+          <div class="mt-8 flex flex-wrap gap-3">
+            <a href="/" class="btn-primary">Go home</a>
+            <a href="/#cities" class="btn-secondary">Browse cities</a>
+            <a href="/#routes" class="btn-secondary">Browse routes</a>
+            <a href="/#months" class="btn-secondary">Browse months</a>
+          </div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

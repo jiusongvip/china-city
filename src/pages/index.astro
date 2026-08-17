@@ -1,0 +1,1153 @@
+---
+import '@fontsource-variable/outfit';
+import '@fontsource-variable/manrope';
+import '../styles/global.css';
+import { cities } from '../data/cities';
+import {
+  firstPick,
+  routes,
+  months,
+  faqs,
+  prepItems,
+  trustSignals,
+  budgetSummary,
+  popularComparisons,
+  travelerTypes,
+  decisionRules,
+  quickFacts,
+} from '../data/content';
+
+const hero = {
+  cn: '中国',
+  en: 'China City Guide',
+  image: '/images/hero-great-wall.webp',
+};
+
+const canonicalUrl = new URL(Astro.url.pathname || '/', Astro.site).href;
+
+const websiteSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: 'China City Explorer',
+  url: canonicalUrl,
+  description:
+    'Compare Chinese cities by travel style, budget, season, and high-speed rail to plan the right China trip.',
+};
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map((faq) => ({
+    '@type': 'Question',
+    name: faq.question,
+    acceptedAnswer: {
+      '@type': 'Answer',
+      text: faq.answer,
+    },
+  })),
+};
+
+const cityListSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: 'Top Chinese cities to visit',
+  itemListElement: cities.map((city, index) => ({
+    '@type': 'ListItem',
+    position: index + 1,
+    name: city.name,
+    url: `https://china-city.com/#guide-${city.slug}`,
+    image: `https://china-city.com${city.image}`,
+  })),
+};
+
+const articleSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: 'China City Guide 2026: Compare & Plan the Best Cities',
+  description:
+    'A decision tool for choosing Chinese cities by travel style, budget, season, and high-speed rail, with itineraries, costs, and visa tips.',
+  datePublished: '2026-08-17',
+  dateModified: trustSignals.lastUpdatedISO,
+  image: 'https://china-city.com/images/og-china-city.webp',
+  mainEntityOfPage: {
+    '@type': 'WebPage',
+    '@id': canonicalUrl,
+  },
+  author: {
+    '@type': 'Organization',
+    name: trustSignals.author,
+  },
+  publisher: {
+    '@type': 'Organization',
+    name: trustSignals.author,
+    url: 'https://china-city.com',
+  },
+};
+
+const destinationsSchema = {
+  '@context': 'https://schema.org',
+  '@graph': cities.map((city) => ({
+    '@type': 'TouristDestination',
+    name: `${city.name}, China`,
+    description: city.why,
+    url: `https://china-city.com/#guide-${city.slug}`,
+    containsPlace: city.attractions.map((a) => ({
+      '@type': 'TouristAttraction',
+      name: a.name,
+      description: a.note,
+    })),
+  })),
+};
+
+const organizationSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: 'China City Explorer',
+  url: canonicalUrl,
+  logo: {
+    '@type': 'ImageObject',
+    url: 'https://china-city.com/favicon.svg',
+  },
+  description:
+    'A decision tool for choosing Chinese cities by travel style, budget, season, and high-speed rail.',
+};
+
+const compareData = cities.map((c) => ({
+  slug: c.slug,
+  name: c.name,
+  bestFor: c.bestFor,
+  topAttraction: c.topAttraction,
+  food: c.food,
+  bestMonths: c.bestMonths,
+  budget: c.budget,
+  verdict: c.verdict,
+}));
+
+const labelOffsets: Record<string, { dx: number; dy: number; anchor: string }> = {
+  Suzhou: { dx: 0, dy: -8, anchor: 'middle' },
+  Hangzhou: { dx: 0, dy: 16, anchor: 'middle' },
+  Nanjing: { dx: -7, dy: 4, anchor: 'end' },
+  'Xi\u2019an': { dx: 0, dy: -9, anchor: 'middle' },
+  Chongqing: { dx: 0, dy: 16, anchor: 'middle' },
+  Guilin: { dx: -7, dy: 4, anchor: 'end' },
+  Yangshuo: { dx: 7, dy: 4, anchor: 'start' },
+};
+
+// 长三角三城地理上极近，在地图上适度分散，避免连线被城市点覆盖
+const coordOffsets: Record<string, [number, number]> = {
+  Suzhou: [-14, -22],
+  Hangzhou: [-16, 16],
+  Nanjing: [-12, -8],
+};
+
+function cityPoint(slug: string) {
+  const city = cities.find((c) => c.slug === slug)!;
+  const [lng, lat] = city.coords;
+  const [ox, oy] = coordOffsets[city.name] || [0, 0];
+  return {
+    x: Math.round((lng - 73) * 10) + ox,
+    y: Math.round((54 - lat) * 10) + oy,
+  };
+}
+
+const mapPoints = cities.map((city) => {
+  const pt = cityPoint(city.slug);
+  const off = labelOffsets[city.name] || { dx: 7, dy: 4, anchor: 'start' };
+  return {
+    name: city.name,
+    x: pt.x,
+    y: pt.y,
+    dx: off.dx,
+    dy: off.dy,
+    anchor: off.anchor,
+  };
+});
+
+const mapRoutes = [
+  { slugs: ['beijing', 'xian', 'chengdu', 'guilin', 'hong-kong'], color: '#4527a0', opacity: 0.7 },
+  { slugs: ['shanghai', 'suzhou', 'hangzhou'], color: '#1e3a8a', opacity: 1 },
+  { slugs: ['beijing', 'xian', 'chengdu'], color: '#c83c2d', opacity: 1 },
+].map((route) => ({
+  color: route.color,
+  opacity: route.opacity,
+  points: route.slugs
+    .map((slug) => {
+      const pt = cityPoint(slug);
+      return `${pt.x},${pt.y}`;
+    })
+    .join(' '),
+}));
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+    <title>China City Guide 2026: Compare & Plan the Best Cities</title>
+    <meta
+      name="description"
+      content="Find your perfect Chinese city. Compare top cities by travel style, budget, season, and high-speed rail. Get city guides, itineraries, costs, and visa tips."
+    />
+    <link rel="canonical" href={canonicalUrl} />
+    <link rel="sitemap" href="https://china-city.com/sitemap.xml" />
+    <link rel="preload" as="image" href="/images/hero-great-wall.webp" />
+    <meta name="robots" content="index,follow" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="China City Guide 2026: Compare & Plan the Best Cities" />
+    <meta property="og:description" content="Compare Chinese cities by travel style, budget, season, and high-speed rail to plan the right China trip." />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content="https://china-city.com/images/og-china-city.webp" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="675" />
+    <meta property="og:image:alt" content="China City Explorer" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content="https://china-city.com/images/og-china-city.webp" />
+    <script type="application/ld+json" set:html={JSON.stringify(websiteSchema)}></script>
+    <script type="application/ld+json" set:html={JSON.stringify(faqSchema)}></script>
+    <script type="application/ld+json" set:html={JSON.stringify(cityListSchema)}></script>
+    <script type="application/ld+json" set:html={JSON.stringify(articleSchema)}></script>
+    <script type="application/ld+json" set:html={JSON.stringify(destinationsSchema)}></script>
+    <script type="application/ld+json" set:html={JSON.stringify(organizationSchema)}></script>
+  </head>
+  <body>
+    <header class="sticky top-0 z-40 border-b border-[#d9d8d2] bg-[#f7f7f4]/90 backdrop-blur">
+      <div class="page-shell flex h-20 items-center justify-between gap-4">
+        <a href="#top" class="flex items-center gap-2 text-base font-bold tracking-[-0.02em]">
+          <span class="grid size-9 place-items-center rounded-full bg-[#c83c2d] text-sm text-[#f7f7f4]">C</span>
+          <span>China City Explorer</span>
+        </a>
+        <nav aria-label="Main navigation" class="hidden items-center gap-5 text-sm font-semibold text-[#6b6a65] md:flex">
+          <a class="hover:text-[#161616]" href="#start">Start</a>
+          <a class="hover:text-[#161616]" href="#find">Find</a>
+          <a class="hover:text-[#161616]" href="#cities">Cities</a>
+          <a class="hover:text-[#161616]" href="#compare">Compare</a>
+          <a class="hover:text-[#161616]" href="#map">Map</a>
+          <a class="hover:text-[#161616]" href="#routes">Routes</a>
+          <a class="hover:text-[#161616]" href="#months">Months</a>
+          <a class="hover:text-[#161616]" href="#faq">FAQ</a>
+        </nav>
+        <a class="btn-primary !min-h-10 !px-4 !py-2.5 text-sm md:hidden" href="#start">Start</a>
+      </div>
+    </header>
+
+    <main id="top">
+      <section class="section-pad pt-20 lg:pt-24">
+        <div class="page-shell grid min-h-[calc(100dvh-5rem)] items-center gap-10 lg:grid-cols-[1.08fr_0.92fr]">
+          <div class="max-w-[680px]">
+            <p class="eyebrow mb-6">China city guide 2026</p>
+            <h1 class="max-w-[720px] text-5xl md:text-7xl">
+              Find the right Chinese city for your trip.
+            </h1>
+            <p class="mt-6 max-w-[560px] text-base leading-7 text-[#6b6a65] md:text-lg">
+              First time? Start in Beijing. Compare cities by travel style, budget, season, and rail
+              links, then build a route you can actually book.
+            </p>
+            <div class="mt-6 rounded-2xl border border-[#d9d8d2] bg-white p-4">
+              <p class="text-xs font-bold uppercase tracking-[0.08em] text-[#6b6a65]">The short answer</p>
+              <p class="mt-2 text-sm font-semibold leading-6">
+                Start in <a href="#start" class="text-[#c83c2d] underline decoration-2 underline-offset-2">Beijing</a>
+                &middot; 3 days &middot; $65&ndash;120/day &middot; best Apr, May, Sep, Oct
+              </p>
+            </div>
+            <div class="mt-6 flex flex-wrap gap-3">
+              <a class="btn-primary" href="#start">See the first-timer pick</a>
+              <a class="btn-secondary" href="#find">Take the city quiz</a>
+            </div>
+          </div>
+          <div class="relative aspect-[4/3] w-full overflow-hidden rounded-2xl border border-[#d9d8d2]">
+            <img
+              src={hero.image}
+              alt="The Great Wall of China snaking over green mountain ridges at sunrise"
+              class="absolute inset-0 h-full w-full object-cover"
+              fetchpriority="high"
+              width="960"
+              height="720"
+            />
+            <div class="absolute inset-0 flex flex-col items-center justify-center text-center text-white" style="background: linear-gradient(180deg, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.45) 100%);">
+              <span class="text-[5rem] font-bold leading-none md:text-[7rem]" style="font-family:'Outfit Variable',system-ui,sans-serif;text-shadow:0 2px 30px rgba(0,0,0,0.5)">中国</span>
+              <span class="mt-3 text-xs font-bold uppercase tracking-[0.32em]">{hero.en}</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <nav id="toc" aria-label="On this page" class="border-t border-[#d9d8d2]">
+        <div class="page-shell flex flex-wrap items-center gap-x-5 gap-y-2 py-4 text-sm font-semibold text-[#6b6a65]">
+          <span class="mr-1 text-xs font-bold uppercase tracking-[0.08em]">On this page</span>
+          <a class="hover:text-[#161616]" href="#start">First-timer pick</a>
+          <a class="hover:text-[#161616]" href="#find">City match quiz</a>
+          <a class="hover:text-[#161616]" href="#cities">City guides</a>
+          <a class="hover:text-[#161616]" href="#compare">Compare</a>
+          <a class="hover:text-[#161616]" href="#map">Map</a>
+          <a class="hover:text-[#161616]" href="#routes">Routes</a>
+          <a class="hover:text-[#161616]" href="#months">Months</a>
+          <a class="hover:text-[#161616]" href="#faq">FAQ</a>
+        </div>
+      </nav>
+
+      <section id="start" class="section-pad border-t border-[#d9d8d2]">
+        <div class="page-shell grid gap-6 lg:grid-cols-[0.85fr_1.15fr] lg:items-stretch">
+          <div class="card overflow-hidden">
+            <img src="/images/beijing-forbidden-city.webp" alt="The Forbidden City in Beijing with red walls and golden roofs at sunrise" class="aspect-[4/3] h-full w-full object-cover" width="640" height="480" />
+          </div>
+          <div class="card p-6 md:p-8">
+            <p class="eyebrow mb-6">The verdict</p>
+            <h2 class="text-3xl md:text-4xl">{firstPick.headline}</h2>
+            <p class="mt-4 text-base leading-7 text-[#6b6a65]">{firstPick.summary}</p>
+            <ul class="mt-6 grid gap-3">
+              {firstPick.reasons.map((reason) => (
+                <li class="flex gap-3 text-sm leading-6">
+                  <span class="mt-1 size-2 shrink-0 rounded-full bg-[#c83c2d]"></span>
+                  <span>{reason}</span>
+                </li>
+              ))}
+            </ul>
+            <div class="mt-6 rounded-2xl bg-[#161616] p-5 text-[#f7f7f4]">
+              <p class="text-xs font-bold uppercase tracking-[0.08em] text-[#f7f7f4]/60">A realistic 3-day start</p>
+              <ol class="mt-3 grid gap-2 text-sm leading-6">
+                {firstPick.itinerary.map((step) => (
+                  <li>{step}</li>
+                ))}
+              </ol>
+            </div>
+            <div class="mt-6 grid gap-3 border-t border-[#d9d8d2] pt-5">
+              <p class="text-xs font-bold uppercase tracking-[0.08em] text-[#6b6a65]">Not your style? Start here instead</p>
+              {firstPick.alternatives.map((alt) => (
+                <p class="text-sm leading-6"><strong>{alt.city}:</strong> {alt.reason}</p>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section-pad border-t border-[#d9d8d2]">
+        <div class="page-shell">
+          <div class="mb-8 max-w-[720px]">
+            <p class="eyebrow mb-6">Quick decisions</p>
+            <h2 class="text-4xl md:text-5xl">If this, then that.</h2>
+            <p class="mt-5 max-w-[620px] text-base leading-7 text-[#6b6a65]">
+              Six fast rules for the most common "it depends" questions.
+            </p>
+          </div>
+          <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {decisionRules.map((rule) => (
+              <div class="card p-5">
+                <p class="text-sm font-semibold text-[#6b6a65]">{rule.condition}</p>
+                <p class="mt-2 text-base font-bold">{rule.result}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section class="section-pad border-t border-[#d9d8d2]">
+        <div class="page-shell">
+          <div class="mb-8 max-w-[720px]">
+            <p class="eyebrow mb-6">Pick your style</p>
+            <h2 class="text-4xl md:text-5xl">Start with who you are.</h2>
+            <p class="mt-5 max-w-[620px] text-base leading-7 text-[#6b6a65]">
+              Six traveler types, each with a city combo that fits.
+            </p>
+          </div>
+          <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {travelerTypes.map((type) => (
+              <div class="card p-5">
+                <p class="text-base font-bold">{type.label}</p>
+                <p class="mt-2 text-sm font-semibold text-[#c83c2d]">{type.cities}</p>
+                <p class="mt-2 text-sm leading-6 text-[#6b6a65]">{type.reason}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section id="find" class="section-pad border-t border-[#d9d8d2]">
+        <div class="page-shell grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
+          <div>
+            <p class="eyebrow mb-6">City match</p>
+            <h2 class="text-4xl md:text-5xl">Answer five filters to see a city match.</h2>
+            <p class="mt-5 max-w-[560px] text-base leading-7 text-[#6b6a65]">
+              Use your travel style, budget, season, and trip length to get a clearer starting point.
+            </p>
+          </div>
+
+          <form id="quiz-form" class="card p-5 md:p-7">
+            <div class="grid gap-4 sm:grid-cols-2">
+              <label class="block">
+                <span class="mb-2 block text-xs font-bold uppercase tracking-[0.08em] text-[#6b6a65]">Travel style</span>
+                <select name="style" class="w-full rounded-xl border border-[#d9d8d2] bg-white px-3 py-3 text-sm font-semibold text-[#161616]">
+                  <option value="history">History</option>
+                  <option value="food">Food</option>
+                  <option value="modern">Modern city</option>
+                  <option value="nature">Nature</option>
+                  <option value="photography">Photography</option>
+                  <option value="family">Family</option>
+                </select>
+              </label>
+              <label class="block">
+                <span class="mb-2 block text-xs font-bold uppercase tracking-[0.08em] text-[#6b6a65]">Daily budget</span>
+                <select name="budget" class="w-full rounded-xl border border-[#d9d8d2] bg-white px-3 py-3 text-sm font-semibold text-[#161616]">
+                  <option value="low">Under $60</option>
+                  <option value="mid">$60 to $120</option>
+                  <option value="high">Over $120</option>
+                </select>
+              </label>
+              <label class="block">
+                <span class="mb-2 block text-xs font-bold uppercase tracking-[0.08em] text-[#6b6a65]">Trip length</span>
+                <select name="days" class="w-full rounded-xl border border-[#d9d8d2] bg-white px-3 py-3 text-sm font-semibold text-[#161616]">
+                  <option value="short">3 to 5 days</option>
+                  <option value="medium">6 to 9 days</option>
+                  <option value="long">10 or more days</option>
+                </select>
+              </label>
+              <label class="block">
+                <span class="mb-2 block text-xs font-bold uppercase tracking-[0.08em] text-[#6b6a65]">Season</span>
+                <select name="season" class="w-full rounded-xl border border-[#d9d8d2] bg-white px-3 py-3 text-sm font-semibold text-[#161616]">
+                  <option value="spring">Spring</option>
+                  <option value="summer">Summer</option>
+                  <option value="autumn">Autumn</option>
+                  <option value="winter">Winter</option>
+                </select>
+              </label>
+              <label class="block sm:col-span-2">
+                <span class="mb-2 block text-xs font-bold uppercase tracking-[0.08em] text-[#6b6a65]">Who is traveling</span>
+                <select name="who" class="w-full rounded-xl border border-[#d9d8d2] bg-white px-3 py-3 text-sm font-semibold text-[#161616]">
+                  <option value="solo">Solo</option>
+                  <option value="couple">Couple</option>
+                  <option value="family">Family</option>
+                </select>
+              </label>
+            </div>
+            <button type="submit" class="btn-primary mt-5 w-full sm:w-auto">Show my city match</button>
+
+            <div id="quiz-result" class="mt-6 hidden rounded-2xl border border-[#c83c2d]/30 bg-[#c83c2d]/5 p-5">
+              <p id="quiz-result-title" class="text-xl font-bold tracking-[-0.02em]"></p>
+              <p id="quiz-result-reason" class="mt-2 text-sm leading-6 text-[#6b6a65]"></p>
+              <p id="quiz-result-alt" class="mt-3 text-sm font-semibold"></p>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <section id="cities" class="section-pad border-t border-[#d9d8d2]">
+        <div class="page-shell">
+          <div class="mb-8 max-w-[720px]">
+            <p class="eyebrow mb-6">City index</p>
+            <h2 class="text-4xl md:text-5xl">Filter Chinese cities by what you actually want.</h2>
+            <p class="mt-5 max-w-[620px] text-base leading-7 text-[#6b6a65]">
+              Start with a travel mood, then narrow by best months and daily budget. Pick any card to
+              jump to its full guide below: attractions, a day-by-day plan, food, and getting around.
+            </p>
+          </div>
+
+          <div class="mb-7 flex flex-wrap gap-2">
+            <button data-filter="all" class="rounded-full border border-[#161616] bg-[#161616] px-4 py-2 text-xs font-bold text-[#f7f7f4]">All</button>
+            <button data-filter="history" class="rounded-full border border-[#d9d8d2] bg-white px-4 py-2 text-xs font-bold text-[#161616]">History</button>
+            <button data-filter="food" class="rounded-full border border-[#d9d8d2] bg-white px-4 py-2 text-xs font-bold text-[#161616]">Food</button>
+            <button data-filter="modern" class="rounded-full border border-[#d9d8d2] bg-white px-4 py-2 text-xs font-bold text-[#161616]">Modern</button>
+            <button data-filter="nature" class="rounded-full border border-[#d9d8d2] bg-white px-4 py-2 text-xs font-bold text-[#161616]">Nature</button>
+            <button data-filter="photography" class="rounded-full border border-[#d9d8d2] bg-white px-4 py-2 text-xs font-bold text-[#161616]">Photography</button>
+            <button data-filter="family" class="rounded-full border border-[#d9d8d2] bg-white px-4 py-2 text-xs font-bold text-[#161616]">Family</button>
+            <button data-filter="winter" class="rounded-full border border-[#d9d8d2] bg-white px-4 py-2 text-xs font-bold text-[#161616]">Winter</button>
+          </div>
+
+          <div class="mb-7 flex flex-wrap items-center gap-2">
+            <span class="mr-1 text-xs font-bold uppercase tracking-[0.08em] text-[#6b6a65]">Skip cities if you</span>
+            <button data-avoid="spicy" class="avoid-btn rounded-full border border-dashed border-[#c83c2d] bg-white px-4 py-2 text-xs font-bold text-[#c83c2d]">Dislike spicy food</button>
+            <button data-avoid="cold" class="avoid-btn rounded-full border border-dashed border-[#c83c2d] bg-white px-4 py-2 text-xs font-bold text-[#c83c2d]">Hate the cold</button>
+            <button data-avoid="heights" class="avoid-btn rounded-full border border-dashed border-[#c83c2d] bg-white px-4 py-2 text-xs font-bold text-[#c83c2d]">Fear heights</button>
+            <button data-avoid="crowds" class="avoid-btn rounded-full border border-dashed border-[#c83c2d] bg-white px-4 py-2 text-xs font-bold text-[#c83c2d]">Avoid big crowds</button>
+            <button data-avoid="altitude" class="avoid-btn rounded-full border border-dashed border-[#c83c2d] bg-white px-4 py-2 text-xs font-bold text-[#c83c2d]">Worry about altitude</button>
+          </div>
+
+          <div id="city-grid" class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            {cities.map((city) => (
+              <a href={`#guide-${city.slug}`} class="city-card card group overflow-hidden" data-tags={city.tags.join(' ')} data-avoid={city.avoid.join(' ')}>
+                <img src={city.image} alt={`${city.name} travel scene - ${city.topAttraction}`} class="aspect-[4/3] w-full object-cover transition-transform duration-300 group-hover:scale-[1.03]" loading="lazy" decoding="async" width="640" height="480" />
+                <div class="p-5">
+                  <div class="flex items-start justify-between gap-3">
+                    <div>
+                      <h3 class="text-xl">{city.name}</h3>
+                      <p class="mt-1 text-sm text-[#6b6a65]">{city.pinyin} &middot; {city.region}</p>
+                    </div>
+                    <span class="rounded-full bg-[#161616] px-3 py-1 text-xs font-bold text-[#f7f7f4]">{city.days} days</span>
+                  </div>
+                  <div class="mt-4 flex flex-wrap gap-2">
+                    {city.tags.slice(0, 3).map((tag) => (
+                      <span class="rounded-full border border-[#d9d8d2] px-2.5 py-1 text-[0.68rem] font-bold uppercase tracking-[0.06em] text-[#6b6a65]">{tag}</span>
+                    ))}
+                  </div>
+                  <div class="mt-5 border-t border-[#d9d8d2] pt-4">
+                    <p class="text-[0.68rem] font-bold uppercase tracking-[0.06em] text-[#6b6a65]">Top sights</p>
+                    <ul class="mt-2 grid gap-1.5">
+                      {city.attractions.slice(0, 3).map((a) => (
+                        <li class="text-sm leading-5 text-[#6b6a65]">{a.name}</li>
+                      ))}
+                    </ul>
+                  </div>
+                  <div class="mt-4 grid grid-cols-2 gap-3 border-t border-[#d9d8d2] pt-4">
+                    <div>
+                      <p class="text-[0.68rem] font-bold uppercase tracking-[0.06em] text-[#6b6a65]">Best months</p>
+                      <p class="mt-1 text-sm font-semibold">{city.bestMonths}</p>
+                    </div>
+                    <div>
+                      <p class="text-[0.68rem] font-bold uppercase tracking-[0.06em] text-[#6b6a65]">Daily budget</p>
+                      <p class="mt-1 text-sm font-semibold">{city.budget}</p>
+                    </div>
+                  </div>
+                  <p class="mt-4 border-t border-[#d9d8d2] pt-4 text-sm font-semibold leading-6">{city.verdict}</p>
+                  <p class="mt-3 text-xs font-bold uppercase tracking-[0.08em] text-[#c83c2d]">Open full guide &darr;</p>
+                </div>
+              </a>
+            ))}
+          </div>
+
+          <p id="city-empty" class="mt-6 hidden rounded-2xl border border-[#d9d8d2] bg-white p-5 text-sm text-[#6b6a65]">
+            No city matches that filter yet. Try a wider mood or reset to all cities.
+          </p>
+
+          <div class="mt-16">
+            <div class="mb-8 max-w-[720px]">
+              <p class="eyebrow mb-6">City guides</p>
+              <h2 class="text-4xl md:text-5xl">Full guides for every city.</h2>
+              <p class="mt-5 max-w-[620px] text-base leading-7 text-[#6b6a65]">
+                Pick a card above or open any city below. Only one guide opens at a time to keep the page short.
+              </p>
+            </div>
+            <div class="space-y-3">
+              {cities.map((city) => (
+                <details id={`guide-${city.slug}`} class="city-guide rounded-2xl border border-[#d9d8d2] bg-white">
+                  <summary class="flex cursor-pointer list-none items-center justify-between gap-4 p-5">
+                    <h3 class="text-base font-bold">{city.name} <span class="font-normal text-[#6b6a65]">&middot; {city.days} days</span></h3>
+                    <span class="text-xs font-bold uppercase tracking-[0.08em] text-[#c83c2d]">Read guide &darr;</span>
+                  </summary>
+                  <div class="grid gap-6 border-t border-[#d9d8d2] p-5">
+                    <div class="rounded-xl bg-[#161616] p-4 text-[#f7f7f4]">
+                      <p class="text-xs font-bold uppercase tracking-[0.08em] text-[#f7f7f4]/60">Why go</p>
+                      <p class="mt-2 text-sm leading-6">{city.why}</p>
+                    </div>
+                    <p class="text-sm leading-6"><strong>Best for:</strong> {city.bestFor}</p>
+                    <div class="grid gap-6 md:grid-cols-2">
+                      <div>
+                        <h4 class="text-sm font-bold uppercase tracking-[0.08em] text-[#6b6a65]">Top attractions</h4>
+                        <ul class="mt-3 grid gap-2">
+                          {city.attractions.map((a) => (
+                            <li class="text-sm leading-6"><strong>{a.name}:</strong> {a.note}</li>
+                          ))}
+                        </ul>
+                      </div>
+                      <div>
+                        <h4 class="text-sm font-bold uppercase tracking-[0.08em] text-[#6b6a65]">A {city.days}-day plan</h4>
+                        <ol class="mt-3 grid gap-2">
+                          {city.itinerary.map((step) => (
+                            <li class="text-sm leading-6">{step}</li>
+                          ))}
+                        </ol>
+                      </div>
+                    </div>
+                    <div class="grid gap-4 sm:grid-cols-3">
+                      <div>
+                        <h4 class="text-sm font-bold uppercase tracking-[0.08em] text-[#6b6a65]">Where to stay</h4>
+                        <p class="mt-2 text-sm leading-6 text-[#6b6a65]">{city.whereToStay}</p>
+                      </div>
+                      <div>
+                        <h4 class="text-sm font-bold uppercase tracking-[0.08em] text-[#6b6a65]">What to eat</h4>
+                        <p class="mt-2 text-sm leading-6 text-[#6b6a65]">{city.foodDetail}</p>
+                      </div>
+                      <div>
+                        <h4 class="text-sm font-bold uppercase tracking-[0.08em] text-[#6b6a65]">Getting around</h4>
+                        <p class="mt-2 text-sm leading-6 text-[#6b6a65]">{city.gettingAround}</p>
+                      </div>
+                    </div>
+                    <p class="border-t border-[#d9d8d2] pt-4 text-sm leading-6 text-[#6b6a65]"><strong>Skip {city.name} if:</strong> {city.skipIf}</p>
+                  </div>
+                </details>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="compare" class="section-pad border-t border-[#d9d8d2]">
+        <div class="page-shell">
+          <div class="mb-8 max-w-[720px]">
+            <p class="eyebrow mb-6">City compare</p>
+            <h2 class="text-4xl md:text-5xl">The matchups travelers actually search.</h2>
+            <p class="mt-5 max-w-[620px] text-base leading-7 text-[#6b6a65]">
+              Start with a preset verdict, or pick any two cities below to see where each one wins.
+            </p>
+          </div>
+          <div class="mb-10 grid gap-4 md:grid-cols-3">
+            {popularComparisons.map((c) => (
+              <button type="button" class="compare-preset card p-5 text-left transition-transform duration-200 hover:-translate-y-1" data-a={c.slugA} data-b={c.slugB}>
+                <p class="text-base font-bold">{c.label}</p>
+                <p class="mt-3 text-sm leading-6 text-[#6b6a65]">{c.verdict}</p>
+                <p class="mt-4 text-xs font-bold uppercase tracking-[0.08em] text-[#c83c2d]">See comparison below &darr;</p>
+              </button>
+            ))}
+          </div>
+          <div class="grid gap-8 lg:grid-cols-[0.72fr_1.28fr]">
+            <div>
+              <h3 class="text-2xl">Compare any two cities</h3>
+              <p class="mt-3 max-w-[540px] text-base leading-7 text-[#6b6a65]">
+                Pick two cities and see where each one wins, what it costs, and how it connects by rail.
+              </p>
+              <form id="compare-form" class="mt-7 grid gap-4">
+              <label class="block">
+                <span class="mb-2 block text-xs font-bold uppercase tracking-[0.08em] text-[#6b6a65]">First city</span>
+                <select id="compare-a" class="w-full rounded-xl border border-[#d9d8d2] bg-white px-3 py-3 text-sm font-semibold text-[#161616]">
+                  {cities.map((city) => <option value={city.slug}>{city.name}</option>)}
+                </select>
+              </label>
+              <label class="block">
+                <span class="mb-2 block text-xs font-bold uppercase tracking-[0.08em] text-[#6b6a65]">Second city</span>
+                <select id="compare-b" class="w-full rounded-xl border border-[#d9d8d2] bg-white px-3 py-3 text-sm font-semibold text-[#161616]">
+                  {cities.map((city) => <option value={city.slug} selected={city.slug === 'shanghai'}>{city.name}</option>)}
+                </select>
+              </label>
+              <button type="submit" class="btn-primary">Compare these cities</button>
+            </form>
+          </div>
+
+          <div class="card overflow-hidden">
+            <div class="grid grid-cols-3 border-b border-[#d9d8d2] bg-white text-sm font-bold">
+              <div class="p-4">Signal</div>
+              <div id="compare-a-name" class="p-4 text-[#c83c2d]">{cities[0].name}</div>
+              <div id="compare-b-name" class="p-4 text-[#c83c2d]">{cities[1].name}</div>
+            </div>
+            <div class="divide-y divide-[#d9d8d2] bg-white text-sm">
+              <div class="grid grid-cols-3">
+                <div class="p-4 text-[#6b6a65]">Best for</div>
+                <div id="compare-a-best" class="p-4 leading-6">{cities[0].bestFor}</div>
+                <div id="compare-b-best" class="p-4 leading-6">{cities[1].bestFor}</div>
+              </div>
+              <div class="grid grid-cols-3">
+                <div class="p-4 text-[#6b6a65]">Top attraction</div>
+                <div id="compare-a-attraction" class="p-4 leading-6">{cities[0].topAttraction}</div>
+                <div id="compare-b-attraction" class="p-4 leading-6">{cities[1].topAttraction}</div>
+              </div>
+              <div class="grid grid-cols-3">
+                <div class="p-4 text-[#6b6a65]">Food scene</div>
+                <div id="compare-a-food" class="p-4 leading-6">{cities[0].food}</div>
+                <div id="compare-b-food" class="p-4 leading-6">{cities[1].food}</div>
+              </div>
+              <div class="grid grid-cols-3">
+                <div class="p-4 text-[#6b6a65]">Best months</div>
+                <div id="compare-a-months" class="p-4 leading-6">{cities[0].bestMonths}</div>
+                <div id="compare-b-months" class="p-4 leading-6">{cities[1].bestMonths}</div>
+              </div>
+              <div class="grid grid-cols-3">
+                <div class="p-4 text-[#6b6a65]">Daily budget</div>
+                <div id="compare-a-budget" class="p-4 leading-6">{cities[0].budget}</div>
+                <div id="compare-b-budget" class="p-4 leading-6">{cities[1].budget}</div>
+              </div>
+              <div class="grid grid-cols-3">
+                <div class="p-4 text-[#6b6a65]">Verdict</div>
+                <div id="compare-a-verdict" class="p-4 leading-6 font-semibold">{cities[0].verdict}</div>
+                <div id="compare-b-verdict" class="p-4 leading-6 font-semibold">{cities[1].verdict}</div>
+              </div>
+            </div>
+          </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="map" class="section-pad border-t border-[#d9d8d2]">
+        <div class="page-shell">
+          <div class="mb-8 max-w-[720px]">
+            <p class="eyebrow mb-6">Where cities sit</p>
+            <h2 class="text-4xl md:text-5xl">See the geography before you book.</h2>
+            <p class="mt-5 max-w-[620px] text-base leading-7 text-[#6b6a65]">
+              All 15 cities on one simplified map, with the three rail routes drawn in.
+            </p>
+          </div>
+          <div class="grid gap-5 lg:grid-cols-[1.7fr_1fr]">
+            <div class="card overflow-hidden p-4 md:p-6">
+              <div class="overflow-x-auto">
+                <svg viewBox="0 0 620 360" class="w-full min-w-[560px] md:min-w-0" role="img" aria-label="Simplified map of 15 Chinese cities with three rail routes">
+                  {mapRoutes.map((route) => (
+                    <polyline points={route.points} fill="none" stroke="#ffffff" stroke-width="6.5" stroke-linecap="round" stroke-linejoin="round" opacity={route.opacity} />
+                  ))}
+                  {mapRoutes.map((route) => (
+                    <polyline points={route.points} fill="none" stroke={route.color} stroke-width="3" stroke-linecap="round" stroke-linejoin="round" opacity={route.opacity} />
+                  ))}
+                  {mapPoints.map((pt) => (
+                    <g>
+                      <circle cx={pt.x} cy={pt.y} r="6" fill="#ffffff" />
+                      <circle cx={pt.x} cy={pt.y} r="4" fill="#c83c2d" />
+                      <text x={pt.x + pt.dx} y={pt.y + pt.dy} text-anchor={pt.anchor} font-size="11" font-weight="600" fill="#161616">{pt.name}</text>
+                    </g>
+                  ))}
+                </svg>
+              </div>
+            </div>
+            <div class="grid content-start gap-4">
+              <div class="card p-5">
+                <p class="text-xs font-bold uppercase tracking-[0.08em] text-[#6b6a65]">Rail routes</p>
+                <ul class="mt-4 grid gap-4">
+                  <li class="flex gap-3">
+                    <span class="mt-1.5 h-0.5 w-6 shrink-0 rounded bg-[#c83c2d]"></span>
+                    <div>
+                      <p class="text-sm font-semibold">7-day classic triangle</p>
+                      <p class="mt-0.5 text-xs leading-5 text-[#6b6a65]">Beijing → Xi'an → Chengdu</p>
+                    </div>
+                  </li>
+                  <li class="flex gap-3">
+                    <span class="mt-1.5 h-0.5 w-6 shrink-0 rounded bg-[#1e3a8a]"></span>
+                    <div>
+                      <p class="text-sm font-semibold">10-day Jiangnan loop</p>
+                      <p class="mt-0.5 text-xs leading-5 text-[#6b6a65]">Shanghai → Suzhou → Hangzhou</p>
+                    </div>
+                  </li>
+                  <li class="flex gap-3">
+                    <span class="mt-1.5 h-0.5 w-6 shrink-0 rounded bg-[#4527a0]"></span>
+                    <div>
+                      <p class="text-sm font-semibold">14-day panorama</p>
+                      <p class="mt-0.5 text-xs leading-5 text-[#6b6a65]">Beijing → Xi'an → Chengdu → Guilin → Hong Kong</p>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+              <div class="rounded-2xl bg-[#161616] p-5 text-[#f7f7f4]">
+                <p class="text-xs font-bold uppercase tracking-[0.08em] text-[#f7f7f4]/60">Worth knowing</p>
+                <p class="mt-2 text-sm leading-6">Suzhou, Hangzhou, and Nanjing all sit within an hour of Shanghai, which makes the Jiangnan loop the most time-efficient trip in China.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="routes" class="section-pad border-t border-[#d9d8d2]">
+        <div class="page-shell">
+          <div class="mb-8 max-w-[720px]">
+            <p class="eyebrow mb-6">Rail routes</p>
+            <h2 class="text-4xl md:text-5xl">Start with a route that keeps the geography simple.</h2>
+            <p class="mt-5 max-w-[620px] text-base leading-7 text-[#6b6a65]">
+              These three loops group cities that are close enough to travel without wasting full days.
+            </p>
+          </div>
+          <div class="grid gap-5 lg:grid-cols-3">
+            {routes.map((route) => (
+              <article class="card overflow-hidden">
+                <div class="flex aspect-[16/10] w-full flex-col items-center justify-center text-center text-white" style={`background-image: ${route.gradient};`}>
+                  <span class="px-6 text-2xl font-bold leading-tight" style="font-family:'Outfit Variable',system-ui,sans-serif;text-shadow:0 2px 20px rgba(0,0,0,0.3)">{route.title}</span>
+                </div>
+                <div class="p-5">
+                  <p class="text-sm font-bold text-[#161616]">{route.stops}</p>
+                  <p class="mt-2 text-sm leading-6 text-[#6b6a65]">{route.timing}</p>
+                  <div class="mt-3 grid grid-cols-2 gap-3 rounded-xl bg-[#161616] p-3 text-[#f7f7f4]">
+                    <div>
+                      <p class="text-[0.68rem] font-bold uppercase tracking-[0.06em] text-[#f7f7f4]/60">Budget</p>
+                      <p class="mt-1 text-sm font-semibold">{route.budget}</p>
+                    </div>
+                    <div>
+                      <p class="text-[0.68rem] font-bold uppercase tracking-[0.06em] text-[#f7f7f4]/60">Rail time</p>
+                      <p class="mt-1 text-sm font-semibold">{route.railTotal}</p>
+                    </div>
+                  </div>
+                  <p class="mt-3 text-sm leading-6 text-[#6b6a65]">{route.rail}</p>
+                  <p class="mt-4 border-t border-[#d9d8d2] pt-4 text-sm font-semibold">{route.bestFor}</p>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section id="months" class="section-pad border-t border-[#d9d8d2]">
+        <div class="page-shell">
+          <div class="mb-8 max-w-[720px]">
+            <p class="eyebrow mb-6">Month by month</p>
+            <h2 class="text-4xl md:text-5xl">Choose the season before you choose the city.</h2>
+            <p class="mt-5 max-w-[620px] text-base leading-7 text-[#6b6a65]">
+              Weather changes quickly across China. These are the strongest city bets for each month.
+            </p>
+          </div>
+          <div class="-mx-4 overflow-x-auto px-4 pb-4">
+            <div class="flex gap-3">
+              {months.map((item) => (
+                <article class="min-w-[180px] snap-start rounded-2xl border border-[#d9d8d2] bg-white p-4">
+                  <p class="text-sm font-bold">{item.month}</p>
+                  <p class="mt-4 text-sm font-semibold leading-6">{item.cities}</p>
+                  <p class="mt-3 text-sm leading-6 text-[#6b6a65]">{item.note}</p>
+                  <p class="mt-2 border-t border-[#d9d8d2] pt-2 text-xs leading-5 text-[#c83c2d]">{item.avoid}</p>
+                </article>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section-pad border-t border-[#d9d8d2]">
+        <div class="page-shell">
+          <div class="mb-8 max-w-[720px]">
+            <p class="eyebrow mb-6">Practical prep</p>
+            <h2 class="text-4xl md:text-5xl">The last-mile details that actually matter.</h2>
+            <p class="mt-5 max-w-[620px] text-base leading-7 text-[#6b6a65]">
+              Visas, payment, internet, and navigation are where most first trips go wrong. This is the
+              short version you need before booking.
+            </p>
+          </div>
+          <div class="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+            {prepItems.map((item) => (
+              <article class="card p-5">
+                <h3 class="text-lg">{item.title}</h3>
+                <p class="mt-3 text-sm leading-6 text-[#6b6a65]">{item.body}</p>
+              </article>
+            ))}
+          </div>
+          <div class="card mt-6 grid gap-0 sm:grid-cols-3">
+            <div class="p-5 sm:col-span-1">
+              <p class="text-xs font-bold uppercase tracking-[0.08em] text-[#6b6a65]">Budget snapshot</p>
+            </div>
+            <div class="border-t border-[#d9d8d2] p-5 sm:col-span-2 sm:border-t-0">
+              <p class="text-3xl font-bold tracking-[-0.03em]">{budgetSummary.headline}</p>
+              <p class="mt-2 text-sm leading-6 text-[#6b6a65]">{budgetSummary.body}</p>
+            </div>
+          </div>
+          <div class="card mt-6 overflow-hidden">
+            <div class="border-b border-[#d9d8d2] p-5">
+              <p class="text-xs font-bold uppercase tracking-[0.08em] text-[#6b6a65]">China quick facts</p>
+            </div>
+            <div class="grid gap-0 sm:grid-cols-2 lg:grid-cols-3">
+              {quickFacts.map((qf) => (
+                <div class="border-t border-[#d9d8d2] p-5 sm:border-t-0 sm:border-l sm:first:border-l-0">
+                  <p class="text-sm font-bold">{qf.topic}</p>
+                  <p class="mt-2 text-sm leading-6 text-[#6b6a65]">{qf.fact}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="faq" class="section-pad border-t border-[#d9d8d2]">
+        <div class="page-shell grid gap-8 lg:grid-cols-[0.72fr_1.28fr]">
+          <div>
+            <p class="eyebrow mb-6">Quick answers</p>
+            <h2 class="text-4xl md:text-5xl">The questions first-time travelers ask most.</h2>
+            <p class="mt-5 max-w-[540px] text-base leading-7 text-[#6b6a65]">
+              Short answers to the decisions that matter before booking flights and trains.
+            </p>
+          </div>
+          <div class="space-y-3">
+            {faqs.map((faq) => (
+              <details class="group rounded-2xl border border-[#d9d8d2] bg-white p-5">
+                <summary class="cursor-pointer list-none text-base font-bold tracking-[-0.01em]">
+                  {faq.question}
+                </summary>
+                <p class="mt-3 text-sm leading-7 text-[#6b6a65]">{faq.answer}</p>
+              </details>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section class="section-pad border-t border-[#d9d8d2]">
+        <div class="page-shell">
+          <div class="mb-8 max-w-[720px]">
+            <p class="eyebrow mb-6">Why this page is different</p>
+            <h2 class="text-4xl md:text-5xl">A list of cities is not a plan.</h2>
+            <p class="mt-5 max-w-[620px] text-base leading-7 text-[#6b6a65]">
+              Search results give you tables and Top 10 lists. They do not give you a verdict.
+            </p>
+          </div>
+          <div class="grid gap-4 md:grid-cols-3">
+            <div class="card p-6">
+              <p class="text-xs font-bold uppercase tracking-[0.08em] text-[#6b6a65]">Wikipedia</p>
+              <p class="mt-3 text-sm leading-6 text-[#6b6a65]">Lists every city with population and area. Complete data, but it will not tell you which city fits your trip, budget, or season.</p>
+            </div>
+            <div class="card p-6">
+              <p class="text-xs font-bold uppercase tracking-[0.08em] text-[#6b6a65]">Top 10 listicles</p>
+              <p class="mt-3 text-sm leading-6 text-[#6b6a65]">Show pretty photos and subjective rankings. No budget, no season, no high-speed rail, and no clear verdict.</p>
+            </div>
+            <div class="rounded-2xl bg-[#161616] p-6 text-[#f7f7f4]">
+              <p class="text-xs font-bold uppercase tracking-[0.08em] text-[#f7f7f4]/60">This page</p>
+              <p class="mt-3 text-sm leading-6">Gives a clear verdict, filters by your travel style, excludes what you dislike, and connects cities by high-speed rail with real costs.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section-pad border-t border-[#d9d8d2]">
+        <div class="page-shell">
+          <div class="card p-6 md:p-8">
+            <div class="grid gap-8 lg:grid-cols-2">
+              <div>
+                <p class="eyebrow mb-6">How we pick</p>
+                <h2 class="text-3xl">Why trust these recommendations?</h2>
+                <p class="mt-4 text-base leading-7 text-[#6b6a65]">{trustSignals.method}</p>
+                <p class="mt-4 text-sm leading-6 text-[#6b6a65]">
+                  Author: {trustSignals.author}. Last updated: {trustSignals.lastUpdated}.
+                </p>
+                <p class="mt-3 text-sm leading-6 text-[#6b6a65]">{trustSignals.authorBio}</p>
+                <p class="mt-3 rounded-xl border border-[#d9d8d2] bg-white p-4 text-sm leading-6 text-[#6b6a65]">
+                  {trustSignals.updateNote}
+                </p>
+                <p class="mt-3 text-sm leading-6 text-[#6b6a65]">
+                  Spotted an outdated rail time or visa rule? Tell us and we will fix it.
+                </p>
+              </div>
+              <div>
+                <p class="text-xs font-bold uppercase tracking-[0.08em] text-[#6b6a65]">Data sources</p>
+                <ul class="mt-4 grid gap-2 text-sm leading-6">
+                  {trustSignals.sources.map((source) => (
+                    <li class="flex gap-3">
+                      <span class="mt-1 size-2 shrink-0 rounded-full bg-[#c83c2d]"></span>
+                      <a href={source.url} target="_blank" rel="noopener noreferrer nofollow" class="underline decoration-1 underline-offset-2 hover:text-[#c83c2d]">{source.label}</a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="privacy" class="section-pad border-t border-[#d9d8d2]">
+        <div class="page-shell">
+          <div class="mb-8 max-w-[720px]">
+            <p class="eyebrow mb-6">Privacy</p>
+            <h2 class="text-4xl md:text-5xl">No tracking, no sign-up.</h2>
+          </div>
+          <div class="card p-6 md:p-8">
+            <p class="text-base leading-7 text-[#6b6a65]">
+              This is a static reference page. It does not use cookies, run analytics scripts, collect personal data, or track your activity. The city match quiz and comparison tool run entirely in your browser, and nothing you enter is sent to a server or stored.
+            </p>
+            <p class="mt-4 text-sm leading-6 text-[#6b6a65]">
+              If you spot an error or have a question, email <a href="mailto:hello@china-city.com" class="underline decoration-1 underline-offset-2 hover:text-[#c83c2d]">hello@china-city.com</a>.
+            </p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="border-t border-[#d9d8d2] bg-[#161616] text-[#f7f7f4]">
+      <div class="page-shell flex flex-col gap-6 py-10 md:flex-row md:items-center md:justify-between">
+        <div>
+          <p class="text-lg font-bold tracking-[-0.02em]">China City Explorer</p>
+          <p class="mt-2 max-w-[460px] text-sm leading-6 text-[#f7f7f4]/60">
+            A single-page planning tool for choosing Chinese cities by travel style, budget, season,
+            and rail access.
+          </p>
+        </div>
+        <nav aria-label="Footer navigation" class="flex flex-wrap gap-x-5 gap-y-3 text-sm font-semibold text-[#f7f7f4]/70">
+          <a class="hover:text-[#f7f7f4]" href="#start">Start</a>
+          <a class="hover:text-[#f7f7f4]" href="#find">Find</a>
+          <a class="hover:text-[#f7f7f4]" href="#cities">Cities</a>
+          <a class="hover:text-[#f7f7f4]" href="#compare">Compare</a>
+          <a class="hover:text-[#f7f7f4]" href="#routes">Routes</a>
+          <a class="hover:text-[#f7f7f4]" href="#months">Months</a>
+          <a class="hover:text-[#f7f7f4]" href="#privacy">Privacy</a>
+        </nav>
+      </div>
+      <div class="page-shell border-t border-[#f7f7f4]/15 py-5 text-xs leading-5 text-[#f7f7f4]/45">
+        Visa, train, weather, and price details change often. Confirm current rules with official
+        sources before booking. This page does not sell tours or take commissions on tickets.
+      </div>
+    </footer>
+
+    <script type="application/json" id="city-data" set:html={JSON.stringify(compareData)}></script>
+    <script>
+      const cityData = JSON.parse(document.getElementById('city-data')!.textContent!);
+
+      const filterButtons = document.querySelectorAll<HTMLElement>('[data-filter]');
+      const avoidButtons = document.querySelectorAll<HTMLElement>('.avoid-btn');
+      const cityCards = document.querySelectorAll<HTMLElement>('.city-card');
+      const cityEmpty = document.getElementById('city-empty')!;
+
+      let activeFilter = 'all';
+      const activeAvoid = new Set<string>();
+
+      function applyCityFilters() {
+        let visibleCount = 0;
+        cityCards.forEach((card) => {
+          const tags = (card.dataset.tags || '').split(' ');
+          const avoid = (card.dataset.avoid || '').split(' ').filter(Boolean);
+          const matchesFilter = activeFilter === 'all' || tags.includes(activeFilter);
+          const matchesAvoid = [...activeAvoid].every((a) => !avoid.includes(a));
+          const matches = matchesFilter && matchesAvoid;
+          card.classList.toggle('hidden', !matches);
+          if (matches) visibleCount += 1;
+        });
+        cityEmpty.classList.toggle('hidden', visibleCount !== 0);
+      }
+
+      filterButtons.forEach((button) => {
+        button.addEventListener('click', () => {
+          activeFilter = button.dataset.filter || 'all';
+          filterButtons.forEach((item) => {
+            item.classList.remove('bg-[#161616]', 'text-[#f7f7f4]');
+            item.classList.add('bg-white', 'text-[#161616]');
+          });
+          button.classList.remove('bg-white', 'text-[#161616]');
+          button.classList.add('bg-[#161616]', 'text-[#f7f7f4]');
+          applyCityFilters();
+        });
+      });
+
+      avoidButtons.forEach((button) => {
+        button.addEventListener('click', () => {
+          const key = button.dataset.avoid || '';
+          if (activeAvoid.has(key)) {
+            activeAvoid.delete(key);
+            button.classList.remove('bg-[#c83c2d]', 'text-[#f7f7f4]');
+            button.classList.add('bg-white', 'text-[#c83c2d]');
+          } else {
+            activeAvoid.add(key);
+            button.classList.remove('bg-white', 'text-[#c83c2d]');
+            button.classList.add('bg-[#c83c2d]', 'text-[#f7f7f4]');
+          }
+          applyCityFilters();
+        });
+      });
+
+      // 卡片点击 → 跳到对应详情并展开（一次只展开一个城市）
+      document.querySelectorAll<HTMLElement>('.city-card').forEach((card) => {
+        card.addEventListener('click', (event) => {
+          const href = card.getAttribute('href') || '';
+          if (!href.startsWith('#guide-')) return;
+          event.preventDefault();
+          const target = document.getElementById(href.slice(1));
+          if (!target) return;
+          document.querySelectorAll<HTMLDetailsElement>('.city-guide[open]').forEach((d) => {
+            if (d !== target) d.removeAttribute('open');
+          });
+          target.setAttribute('open', '');
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+      });
+
+      // 详情互斥展开：直接点 summary 也保持一次只开一个
+      document.querySelectorAll<HTMLDetailsElement>('.city-guide').forEach((details) => {
+        details.addEventListener('toggle', () => {
+          if (details.open) {
+            document.querySelectorAll<HTMLDetailsElement>('.city-guide[open]').forEach((d) => {
+              if (d !== details) d.removeAttribute('open');
+            });
+          }
+        });
+      });
+
+      const quizForm = document.getElementById('quiz-form') as HTMLFormElement;
+      const quizResult = document.getElementById('quiz-result')!;
+      const quizResultTitle = document.getElementById('quiz-result-title')!;
+      const quizResultReason = document.getElementById('quiz-result-reason')!;
+      const quizResultAlt = document.getElementById('quiz-result-alt')!;
+
+      const styleSuggestions = {
+        history: {
+          city: "Xi'an",
+          reason: "Xi'an gives you the Terracotta Army, a walkable city wall, and a stronger sense of ancient China without the larger scale of Beijing.",
+          alternatives: ['Beijing', 'Nanjing'],
+        },
+        food: {
+          city: 'Chengdu',
+          reason: 'Chengdu is the best food-first city for first-time visitors, with deep local flavor, tea houses, pandas, and a more relaxed pace.',
+          alternatives: ['Chongqing', 'Xi\u2019an'],
+        },
+        modern: {
+          city: 'Shanghai',
+          reason: 'Shanghai gives you the cleanest modern-city experience, with strong food, design, skyline views, and easy side trips.',
+          alternatives: ['Hong Kong', 'Chongqing'],
+        },
+        nature: {
+          city: 'Guilin',
+          reason: 'Guilin is the easiest nature entry point because the Li River and karst scenery are close to town and simple to arrange.',
+          alternatives: ['Zhangjiajie', 'Hangzhou'],
+        },
+        photography: {
+          city: 'Zhangjiajie',
+          reason: 'Zhangjiajie has the most visually distinct landscape for photography, with layered sandstone peaks and forested viewpoints.',
+          alternatives: ['Guilin', 'Chongqing'],
+        },
+        family: {
+          city: 'Beijing',
+          reason: 'Beijing works well for families because the main landmarks are clear, walkable, and easy to pair with a slower second city.',
+          alternatives: ['Chengdu', 'Hong Kong'],
+        },
+      };
+
+      quizForm.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const form = new FormData(quizForm);
+        const style = form.get('style') as keyof typeof styleSuggestions;
+        const season = form.get('season') as string;
+        const budget = form.get('budget') as string;
+        const who = form.get('who') as string;
+        let suggestion = styleSuggestions[style as keyof typeof styleSuggestions] || styleSuggestions.history;
+
+        if (season === 'winter' && style !== 'food') {
+          suggestion = {
+            city: 'Harbin',
+            reason: 'Harbin is the clearest winter pick when you want snow, ice architecture, and a completely different side of China.',
+            alternatives: ['Beijing', 'Hong Kong'],
+          };
+        }
+
+        if (who === 'family' && style !== 'history') {
+          suggestion = {
+            city: 'Chengdu',
+            reason: 'Chengdu is easy for families because pandas, casual food, and a slower pace reduce the pressure of a packed itinerary.',
+            alternatives: ['Beijing', 'Guilin'],
+          };
+        }
+
+        if (budget === 'high' && style === 'modern') {
+          suggestion = {
+            city: 'Hong Kong',
+            reason: 'Hong Kong is the strongest high-budget city pick when you want polished hotels, skyline views, and dense food culture.',
+            alternatives: ['Shanghai', 'Beijing'],
+          };
+        }
+
+        quizResultTitle.textContent = `Start with ${suggestion.city}.`;
+        quizResultReason.textContent = suggestion.reason;
+        quizResultAlt.textContent = `Good alternatives: ${suggestion.alternatives.join(', ')}.`;
+        quizResult.classList.remove('hidden');
+        quizResult.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      });
+
+      const compareForm = document.getElementById('compare-form')!;
+      const compareA = document.getElementById('compare-a') as HTMLSelectElement;
+      const compareB = document.getElementById('compare-b') as HTMLSelectElement;
+      const fields = [
+        ['bestFor', 'compare-a-best', 'compare-b-best'],
+        ['topAttraction', 'compare-a-attraction', 'compare-b-attraction'],
+        ['food', 'compare-a-food', 'compare-b-food'],
+        ['bestMonths', 'compare-a-months', 'compare-b-months'],
+        ['budget', 'compare-a-budget', 'compare-b-budget'],
+        ['verdict', 'compare-a-verdict', 'compare-b-verdict'],
+      ];
+
+      function updateCompare(slugA: string, slugB: string) {
+        const cityA = cityData.find((city: any) => city.slug === slugA);
+        const cityB = cityData.find((city: any) => city.slug === slugB);
+        if (!cityA || !cityB) return;
+        document.getElementById('compare-a-name')!.textContent = cityA.name;
+        document.getElementById('compare-b-name')!.textContent = cityB.name;
+        fields.forEach(([field, leftId, rightId]) => {
+          document.getElementById(leftId)!.textContent = cityA[field];
+          document.getElementById(rightId)!.textContent = cityB[field];
+        });
+      }
+
+      compareForm.addEventListener('submit', (event) => {
+        event.preventDefault();
+        updateCompare(compareA.value, compareB.value);
+      });
+
+      document.querySelectorAll<HTMLElement>('.compare-preset').forEach((button) => {
+        button.addEventListener('click', () => {
+          compareA.value = button.dataset.a!;
+          compareB.value = button.dataset.b!;
+          updateCompare(button.dataset.a!, button.dataset.b!);
+          compareForm.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+      });
+    </script>
+  </body>
+</html>

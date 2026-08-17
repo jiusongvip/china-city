@@ -1,0 +1,199 @@
+{
+  "summary": {
+    "health_score": 79,
+    "business_type": "Travel guide / content site (single-page decision tool)",
+    "top_findings": [
+      "域名 china-city.com 不存在（DNS NXDOMAIN），站点未上线，无法被搜索引擎访问",
+      "canonical / sitemap / 实际 URL 尾斜杠不一致（trailingSlash: always vs 无尾斜杠）",
+      "Article schema 的 dateModified 为非 ISO 8601 格式（'August 2026'）",
+      "单页化将 33 个可索引 URL 收敛为 1 个，长尾城市词失去独立着陆页（战略权衡）",
+      "Schema 实体使用 fragment URL（#guide-{slug}），实体语义价值有限"
+    ],
+    "quick_wins": [
+      "修复 canonical 尾斜杠（去掉 .replace(/\\/$/, '')）",
+      "修复 Article.dateModified 为 '2026-08-17'",
+      "清理 src/pages 下 cities/compare/months/routes 空目录",
+      "压缩 og-china-city.webp 与 hero-great-wall.webp 至 80KB 以内"
+    ]
+  },
+  "categories": [
+    {
+      "name": "Technical SEO",
+      "score": 60,
+      "what_works": [
+        "sitemap.xml 精简为单页且格式合法",
+        "robots.txt 正常并引用 sitemap",
+        "404 页存在且 noindex",
+        "无残留死链（/cities/、/routes/、/months/、/compare/ 引用为 0）"
+      ],
+      "findings": [
+        {
+          "title": "域名不存在，站点未上线",
+          "severity": "Critical",
+          "description": "nslookup china-city.com 返回 Non-existent domain，https 与 www 均无法访问（HTTP 000）。搜索引擎无法抓取与索引。",
+          "recommendation": "注册域名并托管 DNS 到 Cloudflare，用 Cloudflare Pages 部署 dist/ 目录。"
+        },
+        {
+          "title": "canonical / sitemap 与实际 URL 尾斜杠不一致",
+          "severity": "High",
+          "description": "astro.config.mjs 为 trailingSlash: 'always'，首页实际 URL 为 https://china-city.com/；但 canonical 与 sitemap loc 均为无尾斜杠的 https://china-city.com。",
+          "recommendation": "统一为带尾斜杠：去掉 index.astro 的 .replace(/\\/$/, '')，sitemap loc 加 '/'。"
+        },
+        {
+          "title": "src/pages 存在残留空目录",
+          "severity": "Low",
+          "description": "cities/、compare/、months/、routes/ 目录内文件已删除但空目录仍在，不影响构建。",
+          "recommendation": "删除空目录，保持目录整洁。"
+        }
+      ]
+    },
+    {
+      "name": "Content Quality",
+      "score": 88,
+      "what_works": [
+        "首页信息密度极高：15 城市完整指南 + 3 路线 + 12 月份 + 3 对比 + 30 FAQ",
+        "E-E-A-T 信号完整（方法论、数据来源、作者、更新时间）",
+        "内容分层清晰，从决策到实用细节的完整漏斗"
+      ],
+      "findings": [
+        {
+          "title": "长尾关键词着陆页减少",
+          "severity": "Medium",
+          "description": "单页化前 33 个可索引 URL（15 城市 + 12 月 + 3 路线 + 3 对比）收敛为 1 个，长尾城市词（如 beijing travel guide）失去独立着陆页。",
+          "recommendation": "上线后通过 GSC 监控长尾曝光；必要时为高价值城市恢复少量独立页面作为 SEO 着陆页。"
+        }
+      ]
+    },
+    {
+      "name": "On-Page SEO",
+      "score": 92,
+      "what_works": [
+        "Title 57 字符含核心词，meta description 语义完整",
+        "H1 唯一，H2(14)/H3(8) 层级合理",
+        "Open Graph 与 twitter card 完整"
+      ],
+      "findings": []
+    },
+    {
+      "name": "Schema / Structured Data",
+      "score": 68,
+      "what_works": [
+        "已输出 5 组 JSON-LD：WebSite / FAQPage / ItemList / Article / TouristDestination"
+      ],
+      "findings": [
+        {
+          "title": "Article.dateModified 非 ISO 8601 格式",
+          "severity": "High",
+          "description": "dateModified 取 trustSignals.lastUpdated = 'August 2026'，与 datePublished '2026-08-17' 格式不一致，触发 Schema 验证告警。",
+          "recommendation": "将 lastUpdated 改为 '2026-08-17' 或为 schema 单独提供 ISO 日期。"
+        },
+        {
+          "title": "Schema 实体使用 fragment URL",
+          "severity": "Medium",
+          "description": "ItemList 与 TouristDestination 的 url 均为 #guide-{slug} 锚点，指向同一页面，实体语义价值有限。",
+          "recommendation": "保留（保证 Schema 合法）或移除 url 字段仅保留 name/description。"
+        },
+        {
+          "title": "缺少独立 Organization schema",
+          "severity": "Medium",
+          "description": "Article 的 author/publisher 引用 Organization 但无独立实体（logo、sameAs）。",
+          "recommendation": "补充独立 Organization schema。"
+        }
+      ]
+    },
+    {
+      "name": "Performance (CWV)",
+      "score": 78,
+      "what_works": [
+        "图片全部 WebP，hero 图有 preload + fetchpriority high",
+        "图片均有 width/height 防 CLS",
+        "字体仅 latin 子集（2 个文件）"
+      ],
+      "findings": [
+        {
+          "title": "无法实测 CWV",
+          "severity": "Info",
+          "description": "站点未上线，无法用真实 Chrome / CrUX 测量 LCP、INP、CLS。",
+          "recommendation": "部署后实测 CWV。"
+        },
+        {
+          "title": "og 与 hero 图偏大",
+          "severity": "Low",
+          "description": "og-china-city.webp 111KB，hero-great-wall.webp 109KB。",
+          "recommendation": "压缩至 80KB 以内。"
+        }
+      ]
+    },
+    {
+      "name": "AI Search Readiness",
+      "score": 82,
+      "what_works": [
+        "llms.txt 与 llms-full.txt 存在，锚点已同步更新",
+        "语义化 HTML（article/details/section）利于段落级引用"
+      ],
+      "findings": [
+        {
+          "title": "单页体量大，AI 抓取可能截断",
+          "severity": "Low",
+          "description": "构建后 HTML 约 182KB，AI 抓取器可能截断长页面。",
+          "recommendation": "保留 llms-full.txt 作为补充抓取入口。"
+        }
+      ]
+    },
+    {
+      "name": "Images",
+      "score": 90,
+      "what_works": [
+        "17 张图片全部 WebP",
+        "全部有描述性 alt 与 width/height",
+        "除 hero 外均 loading=lazy + decoding=async"
+      ],
+      "findings": []
+    }
+  ],
+  "action_plan": {
+    "phases": [
+      {
+        "name": "Phase 1: Critical Fixes",
+        "timeframe": "Week 1",
+        "items": [
+          "注册/恢复 china-city.com 域名并托管 DNS 到 Cloudflare",
+          "部署到 Cloudflare Pages（npm run build，输出 dist）",
+          "配置 HTTPS 与规范重定向",
+          "上线后提交 sitemap.xml 到 GSC"
+        ]
+      },
+      {
+        "name": "Phase 2: High-Impact Improvements",
+        "timeframe": "Weeks 1-2",
+        "items": [
+          "统一 canonical/sitemap/实际 URL 尾斜杠",
+          "修复 Article.dateModified 为 ISO 8601",
+          "清理 src/pages 空目录"
+        ]
+      },
+      {
+        "name": "Phase 3: Content & Authority",
+        "timeframe": "Month 1",
+        "items": [
+          "补充独立 Organization schema（logo + sameAs）",
+          "评估 Schema fragment URL 处理策略",
+          "压缩 og 与 hero 图至 80KB 以内"
+        ]
+      },
+      {
+        "name": "Phase 4: Monitoring & Iteration",
+        "timeframe": "Ongoing",
+        "items": [
+          "部署后实测 Core Web Vitals",
+          "GSC 监控长尾城市词收录，评估单页 vs 多页权衡",
+          "定期重跑审计对比得分"
+        ]
+      }
+    ]
+  },
+  "artifacts": {
+    "findings_dir": "findings/",
+    "screenshots_dir": "screenshots/"
+  }
+}

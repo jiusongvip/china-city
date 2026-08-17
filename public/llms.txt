@@ -1,0 +1,44 @@
+# China City Explorer
+
+> China City Explorer is a single-page decision tool for choosing Chinese cities by travel style, budget, season, and high-speed rail. It is intended for travelers planning a China itinerary and for AI assistants helping with travel research.
+
+## Page sections
+
+- Home: https://china-city.com/ - One page with every city guide, comparison tool, route, and month guide as anchor sections.
+- Cities: https://china-city.com/#cities - Browse all 15 city cards and their full guides.
+- Compare: https://china-city.com/#compare - Compare any two cities side by side.
+- Routes: https://china-city.com/#routes - Three high-speed rail loops.
+- Months: https://china-city.com/#months - Best cities by month.
+- FAQ: https://china-city.com/#faq - Common first-time traveler questions.
+
+## City guides (each guide anchors under #cities)
+
+- Beijing: https://china-city.com/#guide-beijing - Imperial history, the Great Wall, and the best first-trip rail hub.
+- Shanghai: https://china-city.com/#guide-shanghai - Modern city break, skyline, design, and food.
+- Xi'an: https://china-city.com/#guide-xian - Terracotta Army and compact history stop.
+- Chengdu: https://china-city.com/#guide-chengdu - Pandas, teahouses, and relaxed food culture.
+- Chongqing: https://china-city.com/#guide-chongqing - Dramatic night city and serious hotpot.
+- Guilin: https://china-city.com/#guide-guilin - Accessible karst river scenery.
+- Yangshuo: https://china-city.com/#guide-yangshuo - Cycling and countryside near Guilin.
+- Hangzhou: https://china-city.com/#guide-hangzhou - West Lake and tea villages.
+- Suzhou: https://china-city.com/#guide-suzhou - Classical gardens and canals.
+- Nanjing: https://china-city.com/#guide-nanjing - Layered history between Beijing and Shanghai.
+- Harbin: https://china-city.com/#guide-harbin - Winter ice festival.
+- Kunming: https://china-city.com/#guide-kunming - Mild weather and the gateway to Yunnan.
+- Lhasa: https://china-city.com/#guide-lhasa - Tibetan culture and Potala Palace.
+- Hong Kong: https://china-city.com/#guide-hong-kong - English-friendly urban gateway.
+- Zhangjiajie: https://china-city.com/#guide-zhangjiajie - Sandstone pillars and heights.
+
+## Routes
+
+- Classic triangle: https://china-city.com/#routes - Beijing, Xi'an, Chengdu.
+- Jiangnan loop: https://china-city.com/#routes - Shanghai, Suzhou, Hangzhou.
+- Panorama: https://china-city.com/#routes - Beijing, Xi'an, Chengdu, Guilin, Hong Kong.
+
+## Month guidance
+
+- https://china-city.com/#months - January through December city recommendations.
+
+## Notes
+
+The site contains editorial travel guidance, not official government or rail authority data. Visa, train, weather, and price rules change; confirm them with official sources before travel.
