@@ -1,33 +1,33 @@
 # China City Explorer
 
-> China City Explorer is a single-page decision tool for choosing Chinese cities by travel style, budget, season, and high-speed rail. It is intended for travelers planning a China itinerary and for AI assistants helping with travel research.
+> China City Explorer is a decision tool for choosing Chinese cities by travel style, budget, season, and high-speed rail, with a dedicated in-depth guide for every city. It is intended for travelers planning a China itinerary and for AI assistants helping with travel research.
 
 ## Page sections
 
-- Home: https://china-city.com/ - One page with every city guide, comparison tool, route, and month guide as anchor sections.
-- Cities: https://china-city.com/#cities - Browse all 15 city cards and their full guides.
+- Home: https://china-city.com/ - City filter, comparison tool, reference table, routes, month guidance, and FAQ.
+- Cities: https://china-city.com/#cities - Browse all 15 city cards and the A-Z reference table.
 - Compare: https://china-city.com/#compare - Compare any two cities side by side.
 - Routes: https://china-city.com/#routes - Three high-speed rail loops.
 - Months: https://china-city.com/#months - Best cities by month.
 - FAQ: https://china-city.com/#faq - Common first-time traveler questions.
 
-## City guides (each guide anchors under #cities)
+## City guide pages (dedicated pages)
 
-- Beijing: https://china-city.com/#guide-beijing - Imperial history, the Great Wall, and the best first-trip rail hub.
-- Shanghai: https://china-city.com/#guide-shanghai - Modern city break, skyline, design, and food.
-- Xi'an: https://china-city.com/#guide-xian - Terracotta Army and compact history stop.
-- Chengdu: https://china-city.com/#guide-chengdu - Pandas, teahouses, and relaxed food culture.
-- Chongqing: https://china-city.com/#guide-chongqing - Dramatic night city and serious hotpot.
-- Guilin: https://china-city.com/#guide-guilin - Accessible karst river scenery.
-- Yangshuo: https://china-city.com/#guide-yangshuo - Cycling and countryside near Guilin.
-- Hangzhou: https://china-city.com/#guide-hangzhou - West Lake and tea villages.
-- Suzhou: https://china-city.com/#guide-suzhou - Classical gardens and canals.
-- Nanjing: https://china-city.com/#guide-nanjing - Layered history between Beijing and Shanghai.
-- Harbin: https://china-city.com/#guide-harbin - Winter ice festival.
-- Kunming: https://china-city.com/#guide-kunming - Mild weather and the gateway to Yunnan.
-- Lhasa: https://china-city.com/#guide-lhasa - Tibetan culture and Potala Palace.
-- Hong Kong: https://china-city.com/#guide-hong-kong - English-friendly urban gateway.
-- Zhangjiajie: https://china-city.com/#guide-zhangjiajie - Sandstone pillars and heights.
+- Beijing: https://china-city.com/cities/beijing/ - Imperial history, the Great Wall, and the best first-trip rail hub. Full guide with season, budget, transport, and FAQs.
+- Shanghai: https://china-city.com/cities/shanghai/ - Modern city break, skyline, design, and food. Full guide with season, budget, transport, and FAQs.
+- Xi'an: https://china-city.com/cities/xian/ - Terracotta Army and compact history stop. Full guide with season, budget, transport, and FAQs.
+- Chengdu: https://china-city.com/cities/chengdu/ - Pandas, teahouses, and relaxed food culture. Full guide with season, budget, transport, and FAQs.
+- Chongqing: https://china-city.com/cities/chongqing/ - Dramatic night city and serious hotpot. Full guide with season, budget, transport, and FAQs.
+- Guilin: https://china-city.com/cities/guilin/ - Accessible karst river scenery. Full guide with season, budget, transport, and FAQs.
+- Yangshuo: https://china-city.com/cities/yangshuo/ - Cycling and countryside near Guilin. Full guide with season, budget, transport, and FAQs.
+- Hangzhou: https://china-city.com/cities/hangzhou/ - West Lake and tea villages. Full guide with season, budget, transport, and FAQs.
+- Suzhou: https://china-city.com/cities/suzhou/ - Classical gardens and canals. Full guide with season, budget, transport, and FAQs.
+- Nanjing: https://china-city.com/cities/nanjing/ - Layered history between Beijing and Shanghai. Full guide with season, budget, transport, and FAQs.
+- Harbin: https://china-city.com/cities/harbin/ - Winter ice festival. Full guide with season, budget, transport, and FAQs.
+- Kunming: https://china-city.com/cities/kunming/ - Mild weather and the gateway to Yunnan. Full guide with season, budget, transport, and FAQs.
+- Lhasa: https://china-city.com/cities/lhasa/ - Tibetan culture and Potala Palace. Full guide with season, budget, transport, and FAQs.
+- Hong Kong: https://china-city.com/cities/hong-kong/ - English-friendly urban gateway. Full guide with season, budget, transport, and FAQs.
+- Zhangjiajie: https://china-city.com/cities/zhangjiajie/ - Sandstone pillars and heights. Full guide with season, budget, transport, and FAQs.
 
 ## Routes
 

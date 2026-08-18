@@ -25,6 +25,9 @@ const hero = {
 
 const canonicalUrl = new URL(Astro.url.pathname || '/', Astro.site).href;
 
+// 所有城市均有独立指南页：卡片/表格链接直接指向独立页
+const cityHref = (citySlug: string) => `/cities/${citySlug}/`;
+
 const websiteSchema = {
   '@context': 'https://schema.org',
   '@type': 'WebSite',
@@ -51,11 +54,12 @@ const cityListSchema = {
   '@context': 'https://schema.org',
   '@type': 'ItemList',
   name: 'Top Chinese cities to visit',
+  numberOfItems: cities.length,
   itemListElement: cities.map((city, index) => ({
     '@type': 'ListItem',
     position: index + 1,
     name: city.name,
-    url: `https://china-city.com/#guide-${city.slug}`,
+    url: `https://china-city.com/cities/${city.slug}/`,
     image: `https://china-city.com${city.image}`,
   })),
 };
@@ -90,7 +94,12 @@ const destinationsSchema = {
     '@type': 'TouristDestination',
     name: `${city.name}, China`,
     description: city.why,
-    url: `https://china-city.com/#guide-${city.slug}`,
+    url: `https://china-city.com/cities/${city.slug}/`,
+    geo: {
+      '@type': 'GeoCoordinates',
+      latitude: city.coords[1],
+      longitude: city.coords[0],
+    },
     containsPlace: city.attractions.map((a) => ({
       '@type': 'TouristAttraction',
       name: a.name,
@@ -122,6 +131,14 @@ const compareData = cities.map((c) => ({
   budget: c.budget,
   verdict: c.verdict,
 }));
+
+// A-Z 城市索引：记录每个首字母第一次出现的行，用于锚点跳转
+const cityInitials = cities.map((c) => c.name.charAt(0).toUpperCase());
+const firstRowByInitial: Record<string, number> = {};
+cityInitials.forEach((letter, i) => {
+  if (!(letter in firstRowByInitial)) firstRowByInitial[letter] = i;
+});
+const initials = Object.keys(firstRowByInitial).sort();
 
 const labelOffsets: Record<string, { dx: number; dy: number; anchor: string }> = {
   Suzhou: { dx: 0, dy: -8, anchor: 'middle' },
@@ -439,7 +456,7 @@ const mapRoutes = [
             <h2 class="text-4xl md:text-5xl">Filter Chinese cities by what you actually want.</h2>
             <p class="mt-5 max-w-[620px] text-base leading-7 text-[#6b6a65]">
               Start with a travel mood, then narrow by best months and daily budget. Pick any card to
-              jump to its full guide below: attractions, a day-by-day plan, food, and getting around.
+              open its full guide: attractions, a day-by-day plan, food, and getting around.
             </p>
           </div>
 
@@ -465,7 +482,7 @@ const mapRoutes = [
 
           <div id="city-grid" class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {cities.map((city) => (
-              <a href={`#guide-${city.slug}`} class="city-card card group overflow-hidden" data-tags={city.tags.join(' ')} data-avoid={city.avoid.join(' ')}>
+              <a href={cityHref(city.slug)} class="city-card card group overflow-hidden" data-tags={city.tags.join(' ')} data-avoid={city.avoid.join(' ')}>
                 <img src={city.image} alt={`${city.name} travel scene - ${city.topAttraction}`} class="aspect-[4/3] w-full object-cover transition-transform duration-300 group-hover:scale-[1.03]" loading="lazy" decoding="async" width="640" height="480" />
                 <div class="p-5">
                   <div class="flex items-start justify-between gap-3">
@@ -499,7 +516,7 @@ const mapRoutes = [
                     </div>
                   </div>
                   <p class="mt-4 border-t border-[#d9d8d2] pt-4 text-sm font-semibold leading-6">{city.verdict}</p>
-                  <p class="mt-3 text-xs font-bold uppercase tracking-[0.08em] text-[#c83c2d]">Open full guide &darr;</p>
+                  <p class="mt-3 text-xs font-bold uppercase tracking-[0.08em] text-[#c83c2d]">Read full guide &rarr;</p>
                 </div>
               </a>
             ))}
@@ -509,63 +526,66 @@ const mapRoutes = [
             No city matches that filter yet. Try a wider mood or reset to all cities.
           </p>
 
-          <div class="mt-16">
-            <div class="mb-8 max-w-[720px]">
-              <p class="eyebrow mb-6">City guides</p>
-              <h2 class="text-4xl md:text-5xl">Full guides for every city.</h2>
-              <p class="mt-5 max-w-[620px] text-base leading-7 text-[#6b6a65]">
-                Pick a card above or open any city below. Only one guide opens at a time to keep the page short.
-              </p>
+          <div id="city-table" class="mt-14">
+            <div class="mb-6 flex flex-wrap items-end justify-between gap-4">
+              <div class="max-w-[620px]">
+                <p class="eyebrow mb-4">China city index</p>
+                <h3 class="text-2xl md:text-3xl">All {cities.length} major cities at a glance.</h3>
+                <p class="mt-3 text-sm leading-6 text-[#6b6a65]">
+                  The same data as the cards above, in one reference table. Jump by first letter, or
+                  click any city name to open its full guide page.
+                </p>
+              </div>
+              <nav aria-label="Cities by first letter" class="flex flex-wrap gap-1.5">
+                {initials.map((letter) => (
+                  <a
+                    href={`#row-${letter}`}
+                    class="grid size-9 place-items-center rounded-lg border border-[#d9d8d2] bg-white text-sm font-bold text-[#6b6a65] transition-colors hover:border-[#161616] hover:text-[#161616]"
+                  >
+                    {letter}
+                  </a>
+                ))}
+              </nav>
             </div>
-            <div class="space-y-3">
-              {cities.map((city) => (
-                <details id={`guide-${city.slug}`} class="city-guide rounded-2xl border border-[#d9d8d2] bg-white">
-                  <summary class="flex cursor-pointer list-none items-center justify-between gap-4 p-5">
-                    <h3 class="text-base font-bold">{city.name} <span class="font-normal text-[#6b6a65]">&middot; {city.days} days</span></h3>
-                    <span class="text-xs font-bold uppercase tracking-[0.08em] text-[#c83c2d]">Read guide &darr;</span>
-                  </summary>
-                  <div class="grid gap-6 border-t border-[#d9d8d2] p-5">
-                    <div class="rounded-xl bg-[#161616] p-4 text-[#f7f7f4]">
-                      <p class="text-xs font-bold uppercase tracking-[0.08em] text-[#f7f7f4]/60">Why go</p>
-                      <p class="mt-2 text-sm leading-6">{city.why}</p>
-                    </div>
-                    <p class="text-sm leading-6"><strong>Best for:</strong> {city.bestFor}</p>
-                    <div class="grid gap-6 md:grid-cols-2">
-                      <div>
-                        <h4 class="text-sm font-bold uppercase tracking-[0.08em] text-[#6b6a65]">Top attractions</h4>
-                        <ul class="mt-3 grid gap-2">
-                          {city.attractions.map((a) => (
-                            <li class="text-sm leading-6"><strong>{a.name}:</strong> {a.note}</li>
-                          ))}
-                        </ul>
-                      </div>
-                      <div>
-                        <h4 class="text-sm font-bold uppercase tracking-[0.08em] text-[#6b6a65]">A {city.days}-day plan</h4>
-                        <ol class="mt-3 grid gap-2">
-                          {city.itinerary.map((step) => (
-                            <li class="text-sm leading-6">{step}</li>
-                          ))}
-                        </ol>
-                      </div>
-                    </div>
-                    <div class="grid gap-4 sm:grid-cols-3">
-                      <div>
-                        <h4 class="text-sm font-bold uppercase tracking-[0.08em] text-[#6b6a65]">Where to stay</h4>
-                        <p class="mt-2 text-sm leading-6 text-[#6b6a65]">{city.whereToStay}</p>
-                      </div>
-                      <div>
-                        <h4 class="text-sm font-bold uppercase tracking-[0.08em] text-[#6b6a65]">What to eat</h4>
-                        <p class="mt-2 text-sm leading-6 text-[#6b6a65]">{city.foodDetail}</p>
-                      </div>
-                      <div>
-                        <h4 class="text-sm font-bold uppercase tracking-[0.08em] text-[#6b6a65]">Getting around</h4>
-                        <p class="mt-2 text-sm leading-6 text-[#6b6a65]">{city.gettingAround}</p>
-                      </div>
-                    </div>
-                    <p class="border-t border-[#d9d8d2] pt-4 text-sm leading-6 text-[#6b6a65]"><strong>Skip {city.name} if:</strong> {city.skipIf}</p>
-                  </div>
-                </details>
-              ))}
+            <div class="overflow-x-auto rounded-2xl border border-[#d9d8d2] bg-white">
+              <table class="w-full min-w-[780px] border-collapse text-left text-sm">
+                <thead>
+                  <tr class="border-b border-[#d9d8d2] bg-[#f0efeb] text-[0.68rem] font-bold uppercase tracking-[0.08em] text-[#6b6a65]">
+                    <th class="p-4">City</th>
+                    <th class="p-4">Region</th>
+                    <th class="p-4">Best months</th>
+                    <th class="p-4">Days</th>
+                    <th class="p-4">Daily budget</th>
+                    <th class="p-4">Rail access</th>
+                    <th class="p-4">Best for</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {cities.map((city, index) => {
+                    const initial = city.name.charAt(0).toUpperCase();
+                    return (
+                      <tr
+                        id={firstRowByInitial[initial] === index ? `row-${initial}` : undefined}
+                        class="city-row cursor-pointer border-b border-[#d9d8d2] transition-colors last:border-b-0 hover:bg-[#f7f7f4]"
+                        data-slug={city.slug}
+                      >
+                        <td class="p-4 font-bold">
+                          <a href={cityHref(city.slug)} class="hover:text-[#c83c2d]">
+                            {city.name}
+                          </a>
+                          <span class="block text-xs font-normal text-[#6b6a65]">{city.pinyin}</span>
+                        </td>
+                        <td class="p-4 text-[#6b6a65]">{city.region}</td>
+                        <td class="p-4 text-[#6b6a65]">{city.bestMonths}</td>
+                        <td class="p-4 text-[#6b6a65]">{city.days}</td>
+                        <td class="p-4 font-semibold">{city.budget}</td>
+                        <td class="p-4 leading-6 text-[#6b6a65]">{city.rail}</td>
+                        <td class="max-w-[280px] p-4 leading-6 text-[#6b6a65]">{city.bestFor}</td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
@@ -1005,30 +1025,13 @@ const mapRoutes = [
         });
       });
 
-      // 卡片点击 → 跳到对应详情并展开（一次只展开一个城市）
-      document.querySelectorAll<HTMLElement>('.city-card').forEach((card) => {
-        card.addEventListener('click', (event) => {
-          const href = card.getAttribute('href') || '';
-          if (!href.startsWith('#guide-')) return;
+      // 表格行点击 → 跳转到城市独立页（卡片本身是 <a> 链接，默认导航即可）
+      document.querySelectorAll<HTMLElement>('.city-row').forEach((row) => {
+        row.addEventListener('click', (event) => {
+          const link = row.querySelector('a[href^="/cities/"]') as HTMLAnchorElement | null;
+          if (!link) return;
           event.preventDefault();
-          const target = document.getElementById(href.slice(1));
-          if (!target) return;
-          document.querySelectorAll<HTMLDetailsElement>('.city-guide[open]').forEach((d) => {
-            if (d !== target) d.removeAttribute('open');
-          });
-          target.setAttribute('open', '');
-          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        });
-      });
-
-      // 详情互斥展开：直接点 summary 也保持一次只开一个
-      document.querySelectorAll<HTMLDetailsElement>('.city-guide').forEach((details) => {
-        details.addEventListener('toggle', () => {
-          if (details.open) {
-            document.querySelectorAll<HTMLDetailsElement>('.city-guide[open]').forEach((d) => {
-              if (d !== details) d.removeAttribute('open');
-            });
-          }
+          window.location.href = link.getAttribute('href') || '';
         });
       });
 

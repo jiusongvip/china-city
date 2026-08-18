@@ -109,6 +109,21 @@ export const faqs: Faq[] = [
       'Beijing is the safest first stop for most travelers: it combines imperial history, world-famous landmarks, good infrastructure, and easy rail connections to Xi\u2019an and Shanghai. If you prefer modern city energy over history, start with Shanghai instead.',
   },
   {
+    question: 'How many cities are in China?',
+    answer:
+      'China has 293 prefecture-level cities and nearly 1,000 county-level cities, but only a small set matters for first-time travelers. This guide covers 15 cities that combine world-class sights, high-speed rail access, and solid tourist infrastructure. If you are planning a first trip, start with Beijing, Shanghai, and Xi\u2019an, then add a nature stop like Guilin or Zhangjiajie.',
+  },
+  {
+    question: 'What are the major cities in China?',
+    answer:
+      'The cities most travelers actually visit are Beijing, Shanghai, Xi\u2019an, Chengdu, Chongqing, Guangzhou, Shenzhen, Hangzhou, Suzhou, Nanjing, and Hong Kong. Beijing and Shanghai anchor most first trips; Xi\u2019an and Chengdu are the strongest second stops; and the Shanghai-Suzhou-Hangzhou loop is the most time-efficient route in the country.',
+  },
+  {
+    question: 'What is the best city to visit in China?',
+    answer:
+      'There is no single best city, but Beijing is the strongest first choice for most travelers: the Forbidden City, the Great Wall, and the Temple of Heaven are unmatched, and its rail hub makes it the easiest place to start a multi-city route. Choose Shanghai for modern energy and food, Chengdu for pandas and a relaxed pace, and Guilin or Zhangjiajie for nature.',
+  },
+  {
     question: 'How many cities can I see in 10 days?',
     answer:
       'Three cities is the sweet spot for 10 days. A common route is Beijing 3 days, Xi\u2019an 2 days, and Shanghai 2 days, with one buffer day for travel and rest. Adding a fourth city usually turns the trip into a rush.',

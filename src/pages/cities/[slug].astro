@@ -1,0 +1,414 @@
+---
+import '@fontsource-variable/outfit';
+import '@fontsource-variable/manrope';
+import '../../styles/global.css';
+import { cities } from '../../data/cities';
+import { cityPageExtras } from '../../data/cityPages';
+
+export function getStaticPaths() {
+  return Object.keys(cityPageExtras).map((slug) => ({ params: { slug } }));
+}
+
+const { slug } = Astro.params;
+
+const city = cities.find((c) => c.slug === slug)!;
+const extra = cityPageExtras[slug]!;
+
+const canonicalUrl = `https://china-city.com/cities/${slug}/`;
+
+const pageTitles: Record<string, string> = {
+  beijing: 'Beijing Travel Guide 2026: Days, Itinerary, Costs & the Great Wall',
+  shanghai: 'Shanghai Travel Guide 2026: Itinerary, Costs & Day Trips',
+  xian: "Xi'an Travel Guide 2026: Terracotta Army, Itinerary & Costs",
+};
+const pageTitle = pageTitles[slug] || `${city.name} Travel Guide 2026`;
+
+const pageDescription = `Plan ${city.name}: a ${city.days}-day itinerary, $${city.budget.replace('$', '')}/day budget, best months (${city.bestMonths}), top attractions, where to stay, and what to eat.`;
+
+const quickFacts = [
+  { label: 'Region', value: city.region },
+  { label: 'Best months', value: city.bestMonths },
+  { label: 'Suggested stay', value: `${city.days} days` },
+  { label: 'Daily budget', value: city.budget },
+  { label: 'Travel style', value: city.tags.slice(0, 3).join(', ') },
+  { label: 'Top attraction', value: city.topAttraction },
+  { label: 'Rail access', value: city.rail },
+  { label: 'Best for', value: city.bestFor },
+];
+
+const relatedCities = extra.related
+  .map((relatedSlug) => cities.find((c) => c.slug === relatedSlug))
+  .filter((c): c is NonNullable<typeof c> => Boolean(c));
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'China City Guide', item: 'https://china-city.com/' },
+    { '@type': 'ListItem', position: 2, name: 'Cities', item: 'https://china-city.com/#cities' },
+    { '@type': 'ListItem', position: 3, name: `${city.name}, China`, item: canonicalUrl },
+  ],
+};
+
+const destinationSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'TouristDestination',
+  name: `${city.name}, China`,
+  description: city.why,
+  url: canonicalUrl,
+  image: `https://china-city.com${city.image}`,
+  geo: {
+    '@type': 'GeoCoordinates',
+    latitude: city.coords[1],
+    longitude: city.coords[0],
+  },
+  containsPlace: city.attractions.map((a) => ({
+    '@type': 'TouristAttraction',
+    name: a.name,
+    description: a.note,
+  })),
+};
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: extra.faqs.map((faq) => ({
+    '@type': 'Question',
+    name: faq.question,
+    acceptedAnswer: { '@type': 'Answer', text: faq.answer },
+  })),
+};
+
+const articleSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: pageTitle,
+  description: pageDescription,
+  datePublished: '2026-08-18',
+  dateModified: '2026-08-18',
+  image: `https://china-city.com${city.image}`,
+  mainEntityOfPage: { '@type': 'WebPage', '@id': canonicalUrl },
+  author: {
+    '@type': 'Organization',
+    name: 'China City Explorer editorial team',
+    url: 'https://china-city.com/',
+  },
+  publisher: {
+    '@type': 'Organization',
+    name: 'China City Explorer',
+    url: 'https://china-city.com/',
+  },
+};
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={pageDescription} />
+    <link rel="canonical" href={canonicalUrl} />
+    <link rel="sitemap" href="https://china-city.com/sitemap.xml" />
+    <link rel="preload" as="image" href={city.image} />
+    <meta name="robots" content="index,follow" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={pageDescription} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={`https://china-city.com${city.image}`} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={pageDescription} />
+    <meta name="twitter:image" content={`https://china-city.com${city.image}`} />
+    <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)}></script>
+    <script type="application/ld+json" set:html={JSON.stringify(destinationSchema)}></script>
+    <script type="application/ld+json" set:html={JSON.stringify(faqSchema)}></script>
+    <script type="application/ld+json" set:html={JSON.stringify(articleSchema)}></script>
+  </head>
+  <body>
+    <header class="sticky top-0 z-40 border-b border-[#d9d8d2] bg-[#f7f7f4]/90 backdrop-blur">
+      <div class="page-shell flex h-20 items-center justify-between gap-4">
+        <a href="/" class="flex items-center gap-2 text-base font-bold tracking-[-0.02em]">
+          <span class="grid size-9 place-items-center rounded-full bg-[#c83c2d] text-sm text-[#f7f7f4]">C</span>
+          <span>China City Explorer</span>
+        </a>
+        <nav aria-label="Main navigation" class="hidden items-center gap-5 text-sm font-semibold text-[#6b6a65] md:flex">
+          <a class="hover:text-[#161616]" href="/#cities">Cities</a>
+          <a class="hover:text-[#161616]" href="/#compare">Compare</a>
+          <a class="hover:text-[#161616]" href="/#routes">Routes</a>
+          <a class="hover:text-[#161616]" href="/#months">Months</a>
+          <a class="hover:text-[#161616]" href="/#faq">FAQ</a>
+        </nav>
+        <a class="btn-primary !min-h-10 !px-4 !py-2.5 text-sm md:hidden" href="/#start">Plan a trip</a>
+      </div>
+    </header>
+
+    <main>
+      <section class="section-pad pt-14 lg:pt-20">
+        <div class="page-shell">
+          <nav aria-label="Breadcrumb" class="mb-6 text-xs font-semibold text-[#6b6a65]">
+            <a href="/" class="hover:text-[#161616]">China City Guide</a>
+            <span class="mx-2" aria-hidden="true">/</span>
+            <a href="/#cities" class="hover:text-[#161616]">Cities</a>
+            <span class="mx-2" aria-hidden="true">/</span>
+            <span class="text-[#161616]">{city.name}</span>
+          </nav>
+
+          <div class="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
+            <div>
+              <p class="eyebrow mb-6">{city.region} &middot; {city.pinyin}</p>
+              <h1 class="text-5xl md:text-6xl">{city.name} Travel Guide</h1>
+              <p class="mt-5 max-w-[560px] text-base leading-7 text-[#6b6a65] md:text-lg">{extra.intro}</p>
+              <div class="mt-6 rounded-2xl border border-[#d9d8d2] bg-white p-4">
+                <p class="text-xs font-bold uppercase tracking-[0.08em] text-[#6b6a65]">The verdict</p>
+                <p class="mt-2 text-sm font-semibold leading-6">{city.verdict}</p>
+              </div>
+              <div class="mt-6 flex flex-wrap gap-3">
+                <a class="btn-primary" href="/#cities">Compare all 15 cities</a>
+                <a class="btn-secondary" href="/#routes">See rail routes</a>
+              </div>
+            </div>
+            <div class="relative aspect-[4/3] w-full overflow-hidden rounded-2xl border border-[#d9d8d2]">
+              <img
+                src={city.image}
+                alt={`${city.name} travel scene - ${city.topAttraction}`}
+                class="absolute inset-0 h-full w-full object-cover"
+                fetchpriority="high"
+                width="960"
+                height="720"
+              />
+              <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/60 to-transparent p-5 text-white">
+                <p class="text-sm font-bold">{city.name}</p>
+                <p class="text-xs text-white/80">{city.topAttraction}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section-pad border-t border-[#d9d8d2] pt-10">
+        <div class="page-shell">
+          <div class="mb-6">
+            <p class="eyebrow mb-4">Quick facts</p>
+            <h2 class="text-3xl md:text-4xl">{city.name} at a glance.</h2>
+          </div>
+          <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {quickFacts.map((fact) => (
+              <div class="card p-4">
+                <p class="text-[0.68rem] font-bold uppercase tracking-[0.06em] text-[#6b6a65]">{fact.label}</p>
+                <p class="mt-2 text-sm font-semibold leading-6">{fact.value}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section class="section-pad border-t border-[#d9d8d2] pt-10">
+        <div class="page-shell grid gap-8 lg:grid-cols-2">
+          <div>
+            <p class="eyebrow mb-4">Why visit</p>
+            <h2 class="text-3xl md:text-4xl">What makes {city.name} worth the trip.</h2>
+            <p class="mt-5 text-base leading-7 text-[#6b6a65]">{city.why}</p>
+            <p class="mt-4 text-sm leading-6"><strong>Best for:</strong> {city.bestFor}</p>
+            <p class="mt-3 rounded-xl border border-[#d9d8d2] bg-white p-4 text-sm leading-6 text-[#6b6a65]">
+              <strong>Skip {city.name} if:</strong> {city.skipIf}
+            </p>
+          </div>
+          <div>
+            <p class="eyebrow mb-4">Season guide</p>
+            <h2 class="text-3xl md:text-4xl">When to go.</h2>
+            <p class="mt-5 text-base leading-7 text-[#6b6a65]">{extra.seasonGuide}</p>
+            <div class="mt-5 rounded-xl bg-[#161616] p-5 text-[#f7f7f4]">
+              <p class="text-xs font-bold uppercase tracking-[0.08em] text-[#f7f7f4]/60">Sweet spot</p>
+              <p class="mt-2 text-2xl font-bold">{city.bestMonths}</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section-pad border-t border-[#d9d8d2] pt-10">
+        <div class="page-shell grid gap-8 lg:grid-cols-2">
+          <div>
+            <p class="eyebrow mb-4">Budget</p>
+            <h2 class="text-3xl md:text-4xl">What {city.name} costs per day.</h2>
+            <p class="mt-5 text-base leading-7 text-[#6b6a65]">{extra.budgetNote}</p>
+            <div class="mt-5 grid grid-cols-2 gap-4">
+              <div class="rounded-xl border border-[#d9d8d2] bg-white p-4">
+                <p class="text-[0.68rem] font-bold uppercase tracking-[0.06em] text-[#6b6a65]">Mid-range day</p>
+                <p class="mt-1 text-xl font-bold">{city.budget}</p>
+              </div>
+              <div class="rounded-xl border border-[#d9d8d2] bg-white p-4">
+                <p class="text-[0.68rem] font-bold uppercase tracking-[0.06em] text-[#6b6a65]">Suggested stay</p>
+                <p class="mt-1 text-xl font-bold">{city.days} days</p>
+              </div>
+            </div>
+          </div>
+          <div>
+            <p class="eyebrow mb-4">Getting there</p>
+            <h2 class="text-3xl md:text-4xl">Arriving in {city.name}.</h2>
+            <p class="mt-5 text-base leading-7 text-[#6b6a65]">{extra.gettingThere}</p>
+            <div class="mt-5 rounded-xl border border-[#d9d8d2] bg-white p-4">
+              <p class="text-[0.68rem] font-bold uppercase tracking-[0.06em] text-[#6b6a65]">Rail links</p>
+              <p class="mt-2 text-sm font-semibold leading-6">{city.rail}</p>
+            </div>
+            <p class="mt-4 text-sm leading-6 text-[#6b6a65]"><strong>Getting around:</strong> {city.gettingAround}</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section-pad border-t border-[#d9d8d2] pt-10">
+        <div class="page-shell">
+          <div class="mb-8 max-w-[720px]">
+            <p class="eyebrow mb-4">Top attractions</p>
+            <h2 class="text-3xl md:text-4xl">The sights you came for.</h2>
+          </div>
+          <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            {city.attractions.map((a) => (
+              <article class="card p-5">
+                <p class="text-lg font-bold">{a.name}</p>
+                <p class="mt-2 text-sm leading-6 text-[#6b6a65]">{a.note}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section class="section-pad border-t border-[#d9d8d2] pt-10">
+        <div class="page-shell">
+          <div class="mb-8 max-w-[720px]">
+            <p class="eyebrow mb-4">Day by day</p>
+            <h2 class="text-3xl md:text-4xl">A realistic {city.days}-day plan.</h2>
+            <p class="mt-4 text-sm leading-6 text-[#6b6a65]">
+              Paced so you see the headline sights without rushing. Times are estimates; book the
+              Forbidden City and Terracotta Army slots ahead.
+            </p>
+          </div>
+          <div class="grid gap-4 lg:grid-cols-3">
+            {city.itinerary.map((step) => (
+              <div class="card p-5">
+                <p class="text-xs font-bold uppercase tracking-[0.08em] text-[#c83c2d]">Day {city.itinerary.indexOf(step) + 1}</p>
+                <p class="mt-2 text-sm leading-6 text-[#6b6a65]">{step}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section class="section-pad border-t border-[#d9d8d2] pt-10">
+        <div class="page-shell grid gap-6 lg:grid-cols-3">
+          <div class="card p-6">
+            <p class="text-xs font-bold uppercase tracking-[0.08em] text-[#6b6a65]">Where to stay</p>
+            <p class="mt-3 text-sm leading-6 text-[#6b6a65]">{city.whereToStay}</p>
+          </div>
+          <div class="card p-6">
+            <p class="text-xs font-bold uppercase tracking-[0.08em] text-[#6b6a65]">What to eat</p>
+            <p class="mt-3 text-sm leading-6 text-[#6b6a65]">{city.foodDetail}</p>
+          </div>
+          <div class="rounded-2xl bg-[#161616] p-6 text-[#f7f7f4]">
+            <p class="text-xs font-bold uppercase tracking-[0.08em] text-[#f7f7f4]/60">Food highlights</p>
+            <p class="mt-3 text-sm leading-6">{city.food}</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section-pad border-t border-[#d9d8d2] pt-10">
+        <div class="page-shell grid gap-8 lg:grid-cols-[0.72fr_1.28fr]">
+          <div>
+            <p class="eyebrow mb-4">Quick answers</p>
+            <h2 class="text-3xl md:text-4xl">{city.name} FAQs.</h2>
+            <p class="mt-4 max-w-[460px] text-sm leading-6 text-[#6b6a65]">
+              The questions travelers ask about {city.name} most, answered straight.
+            </p>
+          </div>
+          <div class="space-y-3">
+            {extra.faqs.map((faq) => (
+              <details class="group rounded-2xl border border-[#d9d8d2] bg-white p-5">
+                <summary class="cursor-pointer list-none text-base font-bold tracking-[-0.01em]">{faq.question}</summary>
+                <p class="mt-3 text-sm leading-7 text-[#6b6a65]">{faq.answer}</p>
+              </details>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section class="section-pad border-t border-[#d9d8d2] pt-10">
+        <div class="page-shell">
+          <div class="mb-8 max-w-[720px]">
+            <p class="eyebrow mb-4">Keep the route going</p>
+            <h2 class="text-3xl md:text-4xl">Pair {city.name} with these cities.</h2>
+          </div>
+          <div class="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+            {relatedCities.map((related) => (
+              <a href={`/cities/${related.slug}/`} class="card group overflow-hidden">
+                <div class="relative aspect-[16/9] overflow-hidden">
+                  <img
+                    src={related.image}
+                    alt={`${related.name} travel scene - ${related.topAttraction}`}
+                    class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"
+                    loading="lazy"
+                    decoding="async"
+                    width="640"
+                    height="360"
+                  />
+                  <span class="absolute left-3 top-3 rounded-full bg-[#161616]/80 px-3 py-1 text-xs font-bold text-[#f7f7f4]">{related.days} days</span>
+                </div>
+                <div class="p-5">
+                  <p class="text-lg font-bold">{related.name}</p>
+                  <p class="mt-1 text-sm leading-6 text-[#6b6a65]">{related.bestFor}</p>
+                  <p class="mt-3 text-xs font-bold uppercase tracking-[0.08em] text-[#c83c2d]">Read the guide &rarr;</p>
+                </div>
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section class="section-pad border-t border-[#d9d8d2] pt-10">
+        <div class="page-shell">
+          <div class="rounded-2xl bg-[#161616] p-8 text-[#f7f7f4] md:p-10">
+            <div class="grid gap-8 lg:grid-cols-[1.2fr_0.8fr] lg:items-center">
+              <div>
+                <p class="text-xs font-bold uppercase tracking-[0.08em] text-[#f7f7f4]/60">Still deciding?</p>
+                <h2 class="mt-3 text-3xl md:text-4xl">Not sure {city.name} is the right first stop?</h2>
+                <p class="mt-4 max-w-[560px] text-sm leading-6 text-[#f7f7f4]/70">
+                  Compare all 15 cities by budget, season, and rail links on the homepage, or take the
+                  two-minute city match quiz.
+                </p>
+              </div>
+              <div class="flex flex-wrap gap-3">
+                <a class="btn-primary" href="/#find">Take the city quiz</a>
+                <a class="inline-flex min-h-12 items-center justify-center rounded-full border border-[#f7f7f4]/30 px-5 text-sm font-bold text-[#f7f7f4] transition-transform hover:-translate-y-0.5" href="/#cities">Browse all cities</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="border-t border-[#d9d8d2] bg-[#161616] text-[#f7f7f4]">
+      <div class="page-shell flex flex-col gap-6 py-10 md:flex-row md:items-center md:justify-between">
+        <div>
+          <p class="text-lg font-bold tracking-[-0.02em]">China City Explorer</p>
+          <p class="mt-2 max-w-[460px] text-sm leading-6 text-[#f7f7f4]/60">
+            A planning tool for choosing Chinese cities by travel style, budget, season, and rail access.
+          </p>
+        </div>
+        <nav aria-label="Footer navigation" class="flex flex-wrap gap-x-5 gap-y-3 text-sm font-semibold text-[#f7f7f4]/70">
+          <a class="hover:text-[#f7f7f4]" href="/#cities">Cities</a>
+          <a class="hover:text-[#f7f7f4]" href="/#compare">Compare</a>
+          <a class="hover:text-[#f7f7f4]" href="/#routes">Routes</a>
+          <a class="hover:text-[#f7f7f4]" href="/#months">Months</a>
+          <a class="hover:text-[#f7f7f4]" href="/#faq">FAQ</a>
+          <a class="hover:text-[#f7f7f4]" href="/#privacy">Privacy</a>
+        </nav>
+      </div>
+      <div class="page-shell border-t border-[#f7f7f4]/15 py-5 text-xs leading-5 text-[#f7f7f4]/45">
+        Visa, train, weather, and price details change often. Confirm current rules with official
+        sources before booking. This page does not sell tours or take commissions on tickets.
+      </div>
+    </footer>
+  </body>
+</html>
