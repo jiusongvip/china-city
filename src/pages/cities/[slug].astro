@@ -17,13 +17,25 @@ const extra = cityPageExtras[slug]!;
 const canonicalUrl = `https://www.china-city.com/cities/${slug}/`;
 
 const pageTitles: Record<string, string> = {
-  beijing: 'Beijing Travel Guide 2026: Days, Itinerary, Costs & the Great Wall',
+  beijing: 'Beijing Travel Guide 2026: Great Wall, Itinerary & Costs',
   shanghai: 'Shanghai Travel Guide 2026: Itinerary, Costs & Day Trips',
   xian: "Xi'an Travel Guide 2026: Terracotta Army, Itinerary & Costs",
+  chengdu: 'Chengdu Travel Guide 2026: Pandas, Food & Itinerary',
+  chongqing: 'Chongqing Travel Guide 2026: Night Views, Hotpot & Costs',
+  guilin: 'Guilin & Yangshuo Travel Guide 2026: Li River & Karst Peaks',
+  yangshuo: 'Yangshuo Travel Guide 2026: Karst Views, Rafts & Cycling',
+  hangzhou: 'Hangzhou Travel Guide 2026: West Lake & Longjing Tea',
+  suzhou: 'Suzhou Travel Guide 2026: Classical Gardens & Canals',
+  nanjing: 'Nanjing Travel Guide 2026: History, Mausoleums & Food',
+  harbin: 'Harbin Travel Guide 2026: Ice Festival & Winter Tips',
+  kunming: 'Kunming Travel Guide 2026: Stone Forest & Yunnan Gateway',
+  lhasa: 'Lhasa Travel Guide 2026: Potala Palace & Tibet Permits',
+  'hong-kong': 'Hong Kong Travel Guide 2026: Skyline, Food & Day Trips',
+  zhangjiajie: 'Zhangjiajie Travel Guide 2026: Avatar Mountains & Itinerary',
 };
 const pageTitle = pageTitles[slug] || `${city.name} Travel Guide 2026`;
 
-const pageDescription = `Plan ${city.name}: a ${city.days}-day itinerary, $${city.budget.replace('$', '')}/day budget, best months (${city.bestMonths}), top attractions, where to stay, and what to eat.`;
+const pageDescription = `Plan ${city.name}: a ${city.days}-day itinerary, $${city.budget.replace('$', '')}/day budget, best months (${city.bestMonths}), top attractions, where to stay, what to eat, and rail access.`;
 
 const quickFacts = [
   { label: 'Region', value: city.region },

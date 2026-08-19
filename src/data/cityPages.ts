@@ -1,5 +1,5 @@
-// 试点城市独立页的扩展内容：首页锚点没有的深度内容（季节、预算、交通、定制 FAQ）
-// 目前覆盖 beijing / shanghai / xian，未来扩城时在此追加，模板无需改动。
+// 15 城独立页的扩展内容：首页没有的深度内容（季节、预算、交通、定制 FAQ）
+// 模板无需改动，扩城时在此追加数据即可。
 
 export interface CityPageExtra {
   intro: string;
@@ -250,7 +250,7 @@ export const cityPageExtras: Record<string, CityPageExtra> = {
     budgetNote:
       'A mid-range day runs $55-100: $40-65 for a hotel, $10-20 for meals, and $5-15 for tickets. West Lake itself is free \u2014 bikes and boats are the only costs. Lingyin Temple is about $10 and the Longjing tea tastings are free (the tea you buy is optional). Budget travelers can stay near $45.',
     gettingThere:
-      'Hangzhou East station is the high-speed rail hub: 45-60 minutes from Shanghai, about 1 hour from Suzhou, and 2-3 hours from Nanjing. The airport is Hangzhou Xiaoshan (HGH), about 30-40 minutes from the city by taxi or airport bus. The metro and shared bikes cover the lake loop and the old town easily.',
+      'Hangzhou East station is the high-speed rail hub: 45-60 minutes from Shanghai, about 1 hour from Suzhou, and about 1.5 hours from Nanjing. The airport is Hangzhou Xiaoshan (HGH), about 30-40 minutes from the city by taxi or airport bus. The metro and shared bikes cover the lake loop and the old town easily.',
     related: ['shanghai', 'suzhou'],
     faqs: [
       {
