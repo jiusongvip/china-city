@@ -14,7 +14,7 @@ const { slug } = Astro.params;
 const city = cities.find((c) => c.slug === slug)!;
 const extra = cityPageExtras[slug]!;
 
-const canonicalUrl = `https://china-city.com/cities/${slug}/`;
+const canonicalUrl = `https://www.china-city.com/cities/${slug}/`;
 
 const pageTitles: Record<string, string> = {
   beijing: 'Beijing Travel Guide 2026: Days, Itinerary, Costs & the Great Wall',
@@ -44,8 +44,8 @@ const breadcrumbSchema = {
   '@context': 'https://schema.org',
   '@type': 'BreadcrumbList',
   itemListElement: [
-    { '@type': 'ListItem', position: 1, name: 'China City Guide', item: 'https://china-city.com/' },
-    { '@type': 'ListItem', position: 2, name: 'Cities', item: 'https://china-city.com/#cities' },
+    { '@type': 'ListItem', position: 1, name: 'China City Guide', item: 'https://www.china-city.com/' },
+    { '@type': 'ListItem', position: 2, name: 'Cities', item: 'https://www.china-city.com/#cities' },
     { '@type': 'ListItem', position: 3, name: `${city.name}, China`, item: canonicalUrl },
   ],
 };
@@ -56,7 +56,7 @@ const destinationSchema = {
   name: `${city.name}, China`,
   description: city.why,
   url: canonicalUrl,
-  image: `https://china-city.com${city.image}`,
+  image: `https://www.china-city.com${city.image}`,
   geo: {
     '@type': 'GeoCoordinates',
     latitude: city.coords[1],
@@ -86,17 +86,17 @@ const articleSchema = {
   description: pageDescription,
   datePublished: '2026-08-18',
   dateModified: '2026-08-18',
-  image: `https://china-city.com${city.image}`,
+  image: `https://www.china-city.com${city.image}`,
   mainEntityOfPage: { '@type': 'WebPage', '@id': canonicalUrl },
   author: {
     '@type': 'Organization',
     name: 'China City Explorer editorial team',
-    url: 'https://china-city.com/',
+    url: 'https://www.china-city.com/',
   },
   publisher: {
     '@type': 'Organization',
     name: 'China City Explorer',
-    url: 'https://china-city.com/',
+    url: 'https://www.china-city.com/',
   },
 };
 ---
@@ -111,18 +111,18 @@ const articleSchema = {
     <title>{pageTitle}</title>
     <meta name="description" content={pageDescription} />
     <link rel="canonical" href={canonicalUrl} />
-    <link rel="sitemap" href="https://china-city.com/sitemap.xml" />
+    <link rel="sitemap" href="https://www.china-city.com/sitemap.xml" />
     <link rel="preload" as="image" href={city.image} />
     <meta name="robots" content="index,follow" />
     <meta property="og:type" content="article" />
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={pageDescription} />
     <meta property="og:url" content={canonicalUrl} />
-    <meta property="og:image" content={`https://china-city.com${city.image}`} />
+    <meta property="og:image" content={`https://www.china-city.com${city.image}`} />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={pageTitle} />
     <meta name="twitter:description" content={pageDescription} />
-    <meta name="twitter:image" content={`https://china-city.com${city.image}`} />
+    <meta name="twitter:image" content={`https://www.china-city.com${city.image}`} />
     <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)}></script>
     <script type="application/ld+json" set:html={JSON.stringify(destinationSchema)}></script>
     <script type="application/ld+json" set:html={JSON.stringify(faqSchema)}></script>

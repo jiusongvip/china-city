@@ -4,40 +4,40 @@
 
 ## Page sections
 
-- Home: https://china-city.com/ - City filter, comparison tool, reference table, routes, month guidance, and FAQ.
-- Cities: https://china-city.com/#cities - Browse all 15 city cards and the A-Z reference table.
-- Compare: https://china-city.com/#compare - Compare any two cities side by side.
-- Routes: https://china-city.com/#routes - Three high-speed rail loops.
-- Months: https://china-city.com/#months - Best cities by month.
-- FAQ: https://china-city.com/#faq - Common first-time traveler questions.
+- Home: https://www.china-city.com/ - City filter, comparison tool, reference table, routes, month guidance, and FAQ.
+- Cities: https://www.china-city.com/#cities - Browse all 15 city cards and the A-Z reference table.
+- Compare: https://www.china-city.com/#compare - Compare any two cities side by side.
+- Routes: https://www.china-city.com/#routes - Three high-speed rail loops.
+- Months: https://www.china-city.com/#months - Best cities by month.
+- FAQ: https://www.china-city.com/#faq - Common first-time traveler questions.
 
 ## City guide pages (dedicated pages)
 
-- Beijing: https://china-city.com/cities/beijing/ - Imperial history, the Great Wall, and the best first-trip rail hub. Full guide with season, budget, transport, and FAQs.
-- Shanghai: https://china-city.com/cities/shanghai/ - Modern city break, skyline, design, and food. Full guide with season, budget, transport, and FAQs.
-- Xi'an: https://china-city.com/cities/xian/ - Terracotta Army and compact history stop. Full guide with season, budget, transport, and FAQs.
-- Chengdu: https://china-city.com/cities/chengdu/ - Pandas, teahouses, and relaxed food culture. Full guide with season, budget, transport, and FAQs.
-- Chongqing: https://china-city.com/cities/chongqing/ - Dramatic night city and serious hotpot. Full guide with season, budget, transport, and FAQs.
-- Guilin: https://china-city.com/cities/guilin/ - Accessible karst river scenery. Full guide with season, budget, transport, and FAQs.
-- Yangshuo: https://china-city.com/cities/yangshuo/ - Cycling and countryside near Guilin. Full guide with season, budget, transport, and FAQs.
-- Hangzhou: https://china-city.com/cities/hangzhou/ - West Lake and tea villages. Full guide with season, budget, transport, and FAQs.
-- Suzhou: https://china-city.com/cities/suzhou/ - Classical gardens and canals. Full guide with season, budget, transport, and FAQs.
-- Nanjing: https://china-city.com/cities/nanjing/ - Layered history between Beijing and Shanghai. Full guide with season, budget, transport, and FAQs.
-- Harbin: https://china-city.com/cities/harbin/ - Winter ice festival. Full guide with season, budget, transport, and FAQs.
-- Kunming: https://china-city.com/cities/kunming/ - Mild weather and the gateway to Yunnan. Full guide with season, budget, transport, and FAQs.
-- Lhasa: https://china-city.com/cities/lhasa/ - Tibetan culture and Potala Palace. Full guide with season, budget, transport, and FAQs.
-- Hong Kong: https://china-city.com/cities/hong-kong/ - English-friendly urban gateway. Full guide with season, budget, transport, and FAQs.
-- Zhangjiajie: https://china-city.com/cities/zhangjiajie/ - Sandstone pillars and heights. Full guide with season, budget, transport, and FAQs.
+- Beijing: https://www.china-city.com/cities/beijing/ - Imperial history, the Great Wall, and the best first-trip rail hub. Full guide with season, budget, transport, and FAQs.
+- Shanghai: https://www.china-city.com/cities/shanghai/ - Modern city break, skyline, design, and food. Full guide with season, budget, transport, and FAQs.
+- Xi'an: https://www.china-city.com/cities/xian/ - Terracotta Army and compact history stop. Full guide with season, budget, transport, and FAQs.
+- Chengdu: https://www.china-city.com/cities/chengdu/ - Pandas, teahouses, and relaxed food culture. Full guide with season, budget, transport, and FAQs.
+- Chongqing: https://www.china-city.com/cities/chongqing/ - Dramatic night city and serious hotpot. Full guide with season, budget, transport, and FAQs.
+- Guilin: https://www.china-city.com/cities/guilin/ - Accessible karst river scenery. Full guide with season, budget, transport, and FAQs.
+- Yangshuo: https://www.china-city.com/cities/yangshuo/ - Cycling and countryside near Guilin. Full guide with season, budget, transport, and FAQs.
+- Hangzhou: https://www.china-city.com/cities/hangzhou/ - West Lake and tea villages. Full guide with season, budget, transport, and FAQs.
+- Suzhou: https://www.china-city.com/cities/suzhou/ - Classical gardens and canals. Full guide with season, budget, transport, and FAQs.
+- Nanjing: https://www.china-city.com/cities/nanjing/ - Layered history between Beijing and Shanghai. Full guide with season, budget, transport, and FAQs.
+- Harbin: https://www.china-city.com/cities/harbin/ - Winter ice festival. Full guide with season, budget, transport, and FAQs.
+- Kunming: https://www.china-city.com/cities/kunming/ - Mild weather and the gateway to Yunnan. Full guide with season, budget, transport, and FAQs.
+- Lhasa: https://www.china-city.com/cities/lhasa/ - Tibetan culture and Potala Palace. Full guide with season, budget, transport, and FAQs.
+- Hong Kong: https://www.china-city.com/cities/hong-kong/ - English-friendly urban gateway. Full guide with season, budget, transport, and FAQs.
+- Zhangjiajie: https://www.china-city.com/cities/zhangjiajie/ - Sandstone pillars and heights. Full guide with season, budget, transport, and FAQs.
 
 ## Routes
 
-- Classic triangle: https://china-city.com/#routes - Beijing, Xi'an, Chengdu.
-- Jiangnan loop: https://china-city.com/#routes - Shanghai, Suzhou, Hangzhou.
-- Panorama: https://china-city.com/#routes - Beijing, Xi'an, Chengdu, Guilin, Hong Kong.
+- Classic triangle: https://www.china-city.com/#routes - Beijing, Xi'an, Chengdu.
+- Jiangnan loop: https://www.china-city.com/#routes - Shanghai, Suzhou, Hangzhou.
+- Panorama: https://www.china-city.com/#routes - Beijing, Xi'an, Chengdu, Guilin, Hong Kong.
 
 ## Month guidance
 
-- https://china-city.com/#months - January through December city recommendations.
+- https://www.china-city.com/#months - January through December city recommendations.
 
 ## Notes
 

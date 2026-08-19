@@ -59,8 +59,8 @@ const cityListSchema = {
     '@type': 'ListItem',
     position: index + 1,
     name: city.name,
-    url: `https://china-city.com/cities/${city.slug}/`,
-    image: `https://china-city.com${city.image}`,
+    url: `https://www.china-city.com/cities/${city.slug}/`,
+    image: `https://www.china-city.com${city.image}`,
   })),
 };
 
@@ -72,7 +72,7 @@ const articleSchema = {
     'A decision tool for choosing Chinese cities by travel style, budget, season, and high-speed rail, with itineraries, costs, and visa tips.',
   datePublished: '2026-08-17',
   dateModified: trustSignals.lastUpdatedISO,
-  image: 'https://china-city.com/images/og-china-city.webp',
+  image: 'https://www.china-city.com/images/og-china-city.webp',
   mainEntityOfPage: {
     '@type': 'WebPage',
     '@id': canonicalUrl,
@@ -84,7 +84,7 @@ const articleSchema = {
   publisher: {
     '@type': 'Organization',
     name: trustSignals.author,
-    url: 'https://china-city.com',
+    url: 'https://www.china-city.com',
   },
 };
 
@@ -94,7 +94,7 @@ const destinationsSchema = {
     '@type': 'TouristDestination',
     name: `${city.name}, China`,
     description: city.why,
-    url: `https://china-city.com/cities/${city.slug}/`,
+    url: `https://www.china-city.com/cities/${city.slug}/`,
     geo: {
       '@type': 'GeoCoordinates',
       latitude: city.coords[1],
@@ -115,7 +115,7 @@ const organizationSchema = {
   url: canonicalUrl,
   logo: {
     '@type': 'ImageObject',
-    url: 'https://china-city.com/favicon.svg',
+    url: 'https://www.china-city.com/favicon.svg',
   },
   description:
     'A decision tool for choosing Chinese cities by travel style, budget, season, and high-speed rail.',
@@ -209,19 +209,19 @@ const mapRoutes = [
       content="Find your perfect Chinese city. Compare top cities by travel style, budget, season, and high-speed rail. Get city guides, itineraries, costs, and visa tips."
     />
     <link rel="canonical" href={canonicalUrl} />
-    <link rel="sitemap" href="https://china-city.com/sitemap.xml" />
+    <link rel="sitemap" href="https://www.china-city.com/sitemap.xml" />
     <link rel="preload" as="image" href="/images/hero-great-wall.webp" />
     <meta name="robots" content="index,follow" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="China City Guide 2026: Compare & Plan the Best Cities" />
     <meta property="og:description" content="Compare Chinese cities by travel style, budget, season, and high-speed rail to plan the right China trip." />
     <meta property="og:url" content={canonicalUrl} />
-    <meta property="og:image" content="https://china-city.com/images/og-china-city.webp" />
+    <meta property="og:image" content="https://www.china-city.com/images/og-china-city.webp" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="675" />
     <meta property="og:image:alt" content="China City Explorer" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:image" content="https://china-city.com/images/og-china-city.webp" />
+    <meta name="twitter:image" content="https://www.china-city.com/images/og-china-city.webp" />
     <script type="application/ld+json" set:html={JSON.stringify(websiteSchema)}></script>
     <script type="application/ld+json" set:html={JSON.stringify(faqSchema)}></script>
     <script type="application/ld+json" set:html={JSON.stringify(cityListSchema)}></script>
