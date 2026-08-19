@@ -23,7 +23,11 @@ const hero = {
   image: '/images/hero-great-wall.webp',
 };
 
-const canonicalUrl = new URL(Astro.url.pathname || '/', Astro.site).href;
+// canonical 规范：trailingSlash always 下内页带尾斜杠，首页根域名不带尾斜杠
+// （new URL('/', site).href 对根路径会返回带 / 的 URL，需对首页单独去尾斜杠）
+const canonicalUrl = (Astro.url.pathname === '/' || !Astro.url.pathname)
+  ? new URL('/', Astro.site).href.replace(/\/$/, '')
+  : new URL(Astro.url.pathname, Astro.site).href;
 
 // 所有城市均有独立指南页：卡片/表格链接直接指向独立页
 const cityHref = (citySlug: string) => `/cities/${citySlug}/`;
