@@ -4,7 +4,7 @@
 
 ## Page sections
 
-- Home: https://www.china-city.com/ - City filter, comparison tool, reference table, routes, month guidance, and FAQ.
+- Home: https://www.china-city.com - City filter, comparison tool, reference table, routes, month guidance, and FAQ.
 - Cities: https://www.china-city.com/#cities - Browse all 15 city cards and the A-Z reference table.
 - Compare: https://www.china-city.com/#compare - Compare any two cities side by side.
 - Routes: https://www.china-city.com/#routes - Three high-speed rail loops.
