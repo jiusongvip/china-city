@@ -6,7 +6,7 @@ import { dirname, join } from 'node:path';
 
 const dist = join(dirname(fileURLToPath(import.meta.url)), '..', 'dist', 'sitemap.xml');
 const xml = readFileSync(dist, 'utf8');
-const fixed = xml.replace('<loc>https://www.china-city.com/</loc>', '<loc>https://www.china-city.com</loc>');
+const fixed = xml.replace('<loc>https://www.chinacitytravel.com/</loc>', '<loc>https://www.chinacitytravel.com</loc>');
 
 if (xml !== fixed) {
   writeFileSync(dist, fixed);

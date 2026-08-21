@@ -4,7 +4,7 @@ import tailwindcss from '@tailwindcss/vite';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://www.china-city.com',
+  site: 'https://www.chinacitytravel.com',
   trailingSlash: 'always',
   vite: {
     plugins: [tailwindcss()],
