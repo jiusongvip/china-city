@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://www.chinacitytravel.com/sitemap.xml
+Sitemap: https://www.chinacitytravel.com/sitemap-index.xml

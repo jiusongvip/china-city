@@ -1,16 +1,27 @@
-// skill 规范第 9 条：sitemap 首页去尾斜杠（@astrojs/sitemap serialize 无法处理根路径，需构建后处理）
-// 本项目的 sitemap 是 public/sitemap.xml 静态文件，直接替换 dist 产物中的首页 URL。
-import { readFileSync, writeFileSync } from 'node:fs';
-import { fileURLToPath } from 'node:url';
-import { dirname, join } from 'node:path';
+// 构建后处理：将 sitemap 首页 URL 去掉尾斜杠，与 canonical 保持一致（内页保持尾斜杠）
+// @astrojs/sitemap 生成 sitemap-index.xml + sitemap-0.xml，首页 URL 位于 sitemap-0.xml 中。
+import { readFileSync, writeFileSync, readdirSync } from "node:fs";
+import { join } from "node:path";
 
-const dist = join(dirname(fileURLToPath(import.meta.url)), '..', 'dist', 'sitemap.xml');
-const xml = readFileSync(dist, 'utf8');
-const fixed = xml.replace('<loc>https://www.chinacitytravel.com/</loc>', '<loc>https://www.chinacitytravel.com</loc>');
+const distDir = "dist";
+const homeUrl = "https://www.chinacitytravel.com";
+const target = `<loc>${homeUrl}/</loc>`;
+const replacement = `<loc>${homeUrl}</loc>`;
 
-if (xml !== fixed) {
-  writeFileSync(dist, fixed);
-  console.log('[fix-sitemap-home] 已修正 sitemap 首页 URL（去掉尾斜杠）');
-} else {
-  console.log('[fix-sitemap-home] sitemap 首页 URL 已符合规范，无需修改');
+let changed = false;
+for (const file of readdirSync(distDir)) {
+  if (!file.startsWith("sitemap-") || !file.endsWith(".xml") || file.includes("index")) {
+    continue;
+  }
+  const path = join(distDir, file);
+  const content = readFileSync(path, "utf8");
+  if (content.includes(target)) {
+    writeFileSync(path, content.replaceAll(target, replacement));
+    changed = true;
+    console.log(`✓ ${file}: 首页 URL 已去尾斜杠`);
+  }
+}
+
+if (!changed) {
+  console.log("⚠ 未找到需要处理的 sitemap 首页 URL");
 }
