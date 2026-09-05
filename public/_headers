@@ -9,3 +9,6 @@
 
 /favicon.svg
   Cache-Control: public, max-age=604800
+
+/*
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://*.google-analytics.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://www.google-analytics.com https://analytics.google.com https://*.google-analytics.com; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'
