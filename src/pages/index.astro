@@ -202,13 +202,31 @@ const mapRoutes = [
 
 <html lang="en">
   <head>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-9JM14H27WN"></script>
+    <!-- Google tag (gtag.js): deferred until first interaction or idle to keep TBT/LCP low -->
     <script is:inline>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
       gtag('config', 'G-9JM14H27WN');
+      (function () {
+        var loaded = false;
+        function loadGa() {
+          if (loaded) return;
+          loaded = true;
+          var s = document.createElement('script');
+          s.async = true;
+          s.src = 'https://www.googletagmanager.com/gtag/js?id=G-9JM14H27WN';
+          document.head.appendChild(s);
+        }
+        ['pointerdown', 'keydown', 'touchstart', 'scroll'].forEach(function (evt) {
+          window.addEventListener(evt, loadGa, { once: true, passive: true });
+        });
+        if ('requestIdleCallback' in window) {
+          requestIdleCallback(loadGa, { timeout: 4000 });
+        } else {
+          setTimeout(loadGa, 2000);
+        }
+      })();
     </script>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -233,6 +251,8 @@ const mapRoutes = [
     <meta property="og:image:height" content="675" />
     <meta property="og:image:alt" content="China City Explorer" />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="China City Guide 2026: Compare & Plan the Best Cities" />
+    <meta name="twitter:description" content="Compare Chinese cities by travel style, budget, season, and high-speed rail to plan the right China trip." />
     <meta name="twitter:image" content="https://www.chinacitytravel.com/images/og-china-city.webp" />
     <script type="application/ld+json" set:html={JSON.stringify(websiteSchema)}></script>
     <script type="application/ld+json" set:html={JSON.stringify(faqSchema)}></script>
