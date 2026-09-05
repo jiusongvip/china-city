@@ -3,6 +3,7 @@ import '@fontsource-variable/outfit';
 import '@fontsource-variable/manrope';
 import '../styles/global.css';
 import { cities } from '../data/cities';
+import { wikipediaUrls } from '../data/wikipedia';
 import {
   firstPick,
   routes,
@@ -99,6 +100,7 @@ const destinationsSchema = {
     name: `${city.name}, China`,
     description: city.why,
     url: `https://www.chinacitytravel.com/cities/${city.slug}/`,
+    sameAs: wikipediaUrls[city.slug],
     geo: {
       '@type': 'GeoCoordinates',
       latitude: city.coords[1],
@@ -123,7 +125,32 @@ const organizationSchema = {
   },
   description:
     'A decision tool for choosing Chinese cities by travel style, budget, season, and high-speed rail.',
+  sameAs: [
+    'https://github.com/jiusongvip/china-city',
+    'https://x.com/chinacitytravel',
+  ],
 };
+
+const citations = [
+  {
+    quote:
+      'Beijing is renowned for its opulent palaces, temples, parks, gardens, tombs, walls and gates, with the Forbidden City hosting the largest collection of ancient wooden structures in the world.',
+    sourceLabel: 'Wikipedia, Beijing',
+    sourceUrl: 'https://en.wikipedia.org/wiki/Beijing',
+  },
+  {
+    quote:
+      'The Terracotta Army is a collection of terracotta sculptures depicting the armies of Qin Shi Huang, the first emperor of China — a form of funerary art buried with the emperor in 210–209 BCE.',
+    sourceLabel: 'Wikipedia, Terracotta Army',
+    sourceUrl: 'https://en.wikipedia.org/wiki/Terracotta_Army',
+  },
+  {
+    quote:
+      'Hong Kong is one of the most densely populated places in the world, and its skyline has been ranked among the most impressive in the world, anchored by Victoria Harbour.',
+    sourceLabel: 'Wikipedia, Hong Kong',
+    sourceUrl: 'https://en.wikipedia.org/wiki/Hong_Kong',
+  },
+];
 
 const compareData = cities.map((c) => ({
   slug: c.slug,
@@ -135,14 +162,6 @@ const compareData = cities.map((c) => ({
   budget: c.budget,
   verdict: c.verdict,
 }));
-
-// A-Z 城市索引：记录每个首字母第一次出现的行，用于锚点跳转
-const cityInitials = cities.map((c) => c.name.charAt(0).toUpperCase());
-const firstRowByInitial: Record<string, number> = {};
-cityInitials.forEach((letter, i) => {
-  if (!(letter in firstRowByInitial)) firstRowByInitial[letter] = i;
-});
-const initials = Object.keys(firstRowByInitial).sort();
 
 const labelOffsets: Record<string, { dx: number; dy: number; anchor: string }> = {
   Suzhou: { dx: 0, dy: -8, anchor: 'middle' },
@@ -270,12 +289,10 @@ const mapRoutes = [
         </a>
         <nav aria-label="Main navigation" class="hidden items-center gap-5 text-sm font-semibold text-[#6b6a65] md:flex">
           <a class="hover:text-[#161616]" href="#start">Start</a>
-          <a class="hover:text-[#161616]" href="#find">Find</a>
           <a class="hover:text-[#161616]" href="#cities">Cities</a>
           <a class="hover:text-[#161616]" href="#compare">Compare</a>
-          <a class="hover:text-[#161616]" href="#map">Map</a>
           <a class="hover:text-[#161616]" href="#routes">Routes</a>
-          <a class="hover:text-[#161616]" href="#months">Months</a>
+          <a class="hover:text-[#161616]" href="/about/">About</a>
           <a class="hover:text-[#161616]" href="#faq">FAQ</a>
         </nav>
         <a class="btn-primary !min-h-10 !px-4 !py-2.5 text-sm md:hidden" href="#start">Start</a>
@@ -376,7 +393,7 @@ const mapRoutes = [
         <div class="page-shell">
           <div class="mb-8 max-w-[720px]">
             <p class="eyebrow mb-6">Quick decisions</p>
-            <h2 class="text-4xl md:text-5xl">If this, then that.</h2>
+            <h2 class="text-4xl md:text-5xl">What kind of China trip are you planning?</h2>
             <p class="mt-5 max-w-[620px] text-base leading-7 text-[#6b6a65]">
               Six fast rules for the most common "it depends" questions.
             </p>
@@ -557,69 +574,6 @@ const mapRoutes = [
           <p id="city-empty" class="mt-6 hidden rounded-2xl border border-[#d9d8d2] bg-white p-5 text-sm text-[#6b6a65]">
             No city matches that filter yet. Try a wider mood or reset to all cities.
           </p>
-
-          <div id="city-table" class="mt-14">
-            <div class="mb-6 flex flex-wrap items-end justify-between gap-4">
-              <div class="max-w-[620px]">
-                <p class="eyebrow mb-4">China city index</p>
-                <h3 class="text-2xl md:text-3xl">All {cities.length} major cities at a glance.</h3>
-                <p class="mt-3 text-sm leading-6 text-[#6b6a65]">
-                  The same data as the cards above, in one reference table. Jump by first letter, or
-                  click any city name to open its full guide page.
-                </p>
-              </div>
-              <nav aria-label="Cities by first letter" class="flex flex-wrap gap-1.5">
-                {initials.map((letter) => (
-                  <a
-                    href={`#row-${letter}`}
-                    class="grid size-9 place-items-center rounded-lg border border-[#d9d8d2] bg-white text-sm font-bold text-[#6b6a65] transition-colors hover:border-[#161616] hover:text-[#161616]"
-                  >
-                    {letter}
-                  </a>
-                ))}
-              </nav>
-            </div>
-            <div class="overflow-x-auto rounded-2xl border border-[#d9d8d2] bg-white">
-              <table class="w-full min-w-[780px] border-collapse text-left text-sm">
-                <thead>
-                  <tr class="border-b border-[#d9d8d2] bg-[#f0efeb] text-[0.68rem] font-bold uppercase tracking-[0.08em] text-[#6b6a65]">
-                    <th class="p-4">City</th>
-                    <th class="p-4">Region</th>
-                    <th class="p-4">Best months</th>
-                    <th class="p-4">Days</th>
-                    <th class="p-4">Daily budget</th>
-                    <th class="p-4">Rail access</th>
-                    <th class="p-4">Best for</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {cities.map((city, index) => {
-                    const initial = city.name.charAt(0).toUpperCase();
-                    return (
-                      <tr
-                        id={firstRowByInitial[initial] === index ? `row-${initial}` : undefined}
-                        class="city-row cursor-pointer border-b border-[#d9d8d2] transition-colors last:border-b-0 hover:bg-[#f7f7f4]"
-                        data-slug={city.slug}
-                      >
-                        <td class="p-4 font-bold">
-                          <a href={cityHref(city.slug)} class="hover:text-[#c83c2d]">
-                            {city.name}
-                          </a>
-                          <span class="block text-xs font-normal text-[#6b6a65]">{city.pinyin}</span>
-                        </td>
-                        <td class="p-4 text-[#6b6a65]">{city.region}</td>
-                        <td class="p-4 text-[#6b6a65]">{city.bestMonths}</td>
-                        <td class="p-4 text-[#6b6a65]">{city.days}</td>
-                        <td class="p-4 font-semibold">{city.budget}</td>
-                        <td class="p-4 leading-6 text-[#6b6a65]">{city.rail}</td>
-                        <td class="max-w-[280px] p-4 leading-6 text-[#6b6a65]">{city.bestFor}</td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            </div>
-          </div>
         </div>
       </section>
 
@@ -776,7 +730,7 @@ const mapRoutes = [
         <div class="page-shell">
           <div class="mb-8 max-w-[720px]">
             <p class="eyebrow mb-6">Rail routes</p>
-            <h2 class="text-4xl md:text-5xl">Start with a route that keeps the geography simple.</h2>
+            <h2 class="text-4xl md:text-5xl">Which rail route fits your trip length?</h2>
             <p class="mt-5 max-w-[620px] text-base leading-7 text-[#6b6a65]">
               These three loops group cities that are close enough to travel without wasting full days.
             </p>
@@ -813,7 +767,7 @@ const mapRoutes = [
         <div class="page-shell">
           <div class="mb-8 max-w-[720px]">
             <p class="eyebrow mb-6">Month by month</p>
-            <h2 class="text-4xl md:text-5xl">Choose the season before you choose the city.</h2>
+            <h2 class="text-4xl md:text-5xl">When is the best time to visit Chinese cities?</h2>
             <p class="mt-5 max-w-[620px] text-base leading-7 text-[#6b6a65]">
               Weather changes quickly across China. These are the strongest city bets for each month.
             </p>
@@ -880,7 +834,7 @@ const mapRoutes = [
         <div class="page-shell grid gap-8 lg:grid-cols-[0.72fr_1.28fr]">
           <div>
             <p class="eyebrow mb-6">Quick answers</p>
-            <h2 class="text-4xl md:text-5xl">The questions first-time travelers ask most.</h2>
+            <h2 class="text-4xl md:text-5xl">Which Chinese city is right for you?</h2>
             <p class="mt-5 max-w-[540px] text-base leading-7 text-[#6b6a65]">
               Short answers to the decisions that matter before booking flights and trains.
             </p>
@@ -898,6 +852,50 @@ const mapRoutes = [
         </div>
       </section>
 
+      <section id="sources" class="section-pad border-t border-[#d9d8d2]">
+        <div class="page-shell">
+          <div class="mb-8 max-w-[720px]">
+            <p class="eyebrow mb-6">Sources &amp; further reading</p>
+            <h2 class="text-4xl md:text-5xl">Where does this information come from?</h2>
+            <p class="mt-5 max-w-[620px] text-base leading-7 text-[#6b6a65]">
+              City facts are cross-checked against Wikipedia and official sources. Quotes below come
+              directly from Wikipedia articles on the cities covered here.
+            </p>
+          </div>
+          <div class="grid gap-4 lg:grid-cols-3">
+            {citations.map((citation) => (
+              <blockquote class="card border-l-4 border-l-[#c83c2d] p-5 text-sm italic leading-6 text-[#6b6a65]">
+                <p>&ldquo;{citation.quote}&rdquo;</p>
+                <footer class="mt-3 text-xs font-semibold not-italic text-[#c83c2d]">
+                  &mdash; <cite><a href={citation.sourceUrl} target="_blank" rel="noopener noreferrer" class="underline decoration-1 underline-offset-2 hover:text-[#161616]">{citation.sourceLabel}</a></cite>
+                </footer>
+              </blockquote>
+            ))}
+          </div>
+          <div class="mt-8 flex flex-wrap gap-2">
+            {[
+              { label: 'China Railway 12306', url: 'https://www.12306.cn/en/index.html' },
+              { label: 'National Immigration Administration', url: 'https://en.nia.gov.cn/' },
+              { label: 'UNESCO World Heritage List', url: 'https://whc.unesco.org/en/list/' },
+              { label: 'Wikipedia: Beijing', url: 'https://en.wikipedia.org/wiki/Beijing' },
+              { label: 'Wikipedia: Shanghai', url: 'https://en.wikipedia.org/wiki/Shanghai' },
+              { label: 'Wikipedia: Xi\u2019an', url: 'https://en.wikipedia.org/wiki/Xi%27an' },
+              { label: 'Wikipedia: Chengdu', url: 'https://en.wikipedia.org/wiki/Chengdu' },
+              { label: 'Wikipedia: Hong Kong', url: 'https://en.wikipedia.org/wiki/Hong_Kong' },
+            ].map((source) => (
+              <a
+                href={source.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="rounded-full border border-[#d9d8d2] bg-white px-4 py-2 text-xs font-bold text-[#6b6a65] transition-colors hover:border-[#161616] hover:text-[#161616]"
+              >
+                {source.label}
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
+
       <section class="section-pad border-t border-[#d9d8d2]">
         <div class="page-shell">
           <div class="mb-8 max-w-[720px]">
@@ -910,15 +908,15 @@ const mapRoutes = [
           <div class="grid gap-4 md:grid-cols-3">
             <div class="card p-6">
               <p class="text-xs font-bold uppercase tracking-[0.08em] text-[#6b6a65]">Wikipedia</p>
-              <p class="mt-3 text-sm leading-6 text-[#6b6a65]">Lists every city with population and area. Complete data, but it will not tell you which city fits your trip, budget, or season.</p>
+              <p class="mt-3 text-sm leading-6 text-[#6b6a65]">Complete data on every city, but no verdict on which one fits your trip, budget, or season.</p>
             </div>
             <div class="card p-6">
               <p class="text-xs font-bold uppercase tracking-[0.08em] text-[#6b6a65]">Top 10 listicles</p>
-              <p class="mt-3 text-sm leading-6 text-[#6b6a65]">Show pretty photos and subjective rankings. No budget, no season, no high-speed rail, and no clear verdict.</p>
+              <p class="mt-3 text-sm leading-6 text-[#6b6a65]">Pretty photos and subjective rankings, with no budget, season, or rail data behind them.</p>
             </div>
             <div class="rounded-2xl bg-[#161616] p-6 text-[#f7f7f4]">
               <p class="text-xs font-bold uppercase tracking-[0.08em] text-[#f7f7f4]/60">This page</p>
-              <p class="mt-3 text-sm leading-6">Gives a clear verdict, filters by your travel style, excludes what you dislike, and connects cities by high-speed rail with real costs.</p>
+              <p class="mt-3 text-sm leading-6">A clear verdict, filters for your style, and cities connected by real high-speed rail costs.</p>
             </div>
           </div>
         </div>
@@ -959,18 +957,13 @@ const mapRoutes = [
         </div>
       </section>
 
-      <section id="privacy" class="section-pad border-t border-[#d9d8d2]">
+      <section class="section-pad border-t border-[#d9d8d2]" id="privacy">
         <div class="page-shell">
-          <div class="mb-8 max-w-[720px]">
-            <p class="eyebrow mb-6">Privacy</p>
-            <h2 class="text-4xl md:text-5xl">No tracking, no sign-up.</h2>
-          </div>
           <div class="card p-6 md:p-8">
             <p class="text-base leading-7 text-[#6b6a65]">
-              This is a static reference page. It does not use cookies, run analytics scripts, collect personal data, or track your activity. The city match quiz and comparison tool run entirely in your browser, and nothing you enter is sent to a server or stored.
-            </p>
-            <p class="mt-4 text-sm leading-6 text-[#6b6a65]">
-              If you spot an error or have a question, email <a href="mailto:hello@chinacitytravel.com" class="underline decoration-1 underline-offset-2 hover:text-[#c83c2d]">hello@chinacitytravel.com</a>.
+              This is a static reference page. The city match quiz and comparison tool run entirely
+              in your browser, and nothing you enter is sent to a server or stored. Read the full
+              <a href="/privacy/" class="text-[#c83c2d] underline decoration-2 underline-offset-2">privacy policy</a>.
             </p>
           </div>
         </div>
@@ -987,13 +980,13 @@ const mapRoutes = [
           </p>
         </div>
         <nav aria-label="Footer navigation" class="flex flex-wrap gap-x-5 gap-y-3 text-sm font-semibold text-[#f7f7f4]/70">
-          <a class="hover:text-[#f7f7f4]" href="#start">Start</a>
-          <a class="hover:text-[#f7f7f4]" href="#find">Find</a>
+          <a class="hover:text-[#f7f7f4]" href="/about/">About</a>
+          <a class="hover:text-[#f7f7f4]" href="/contact/">Contact</a>
+          <a class="hover:text-[#f7f7f4]" href="/privacy/">Privacy</a>
+          <a class="hover:text-[#f7f7f4]" href="/terms/">Terms</a>
           <a class="hover:text-[#f7f7f4]" href="#cities">Cities</a>
           <a class="hover:text-[#f7f7f4]" href="#compare">Compare</a>
           <a class="hover:text-[#f7f7f4]" href="#routes">Routes</a>
-          <a class="hover:text-[#f7f7f4]" href="#months">Months</a>
-          <a class="hover:text-[#f7f7f4]" href="#privacy">Privacy</a>
         </nav>
       </div>
       <div class="page-shell border-t border-[#f7f7f4]/15 py-5 text-xs leading-5 text-[#f7f7f4]/45">
@@ -1054,16 +1047,6 @@ const mapRoutes = [
             button.classList.add('bg-[#c83c2d]', 'text-[#f7f7f4]');
           }
           applyCityFilters();
-        });
-      });
-
-      // 表格行点击 → 跳转到城市独立页（卡片本身是 <a> 链接，默认导航即可）
-      document.querySelectorAll<HTMLElement>('.city-row').forEach((row) => {
-        row.addEventListener('click', (event) => {
-          const link = row.querySelector('a[href^="/cities/"]') as HTMLAnchorElement | null;
-          if (!link) return;
-          event.preventDefault();
-          window.location.href = link.getAttribute('href') || '';
         });
       });
 

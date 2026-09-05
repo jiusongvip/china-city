@@ -29,6 +29,23 @@
 - Hong Kong: https://www.chinacitytravel.com/cities/hong-kong/ - English-friendly urban gateway. Full guide with season, budget, transport, and FAQs.
 - Zhangjiajie: https://www.chinacitytravel.com/cities/zhangjiajie/ - Sandstone pillars and heights. Full guide with season, budget, transport, and FAQs.
 
+## Key Facts
+
+- 15 cities covered: Beijing, Shanghai, Xi'an, Chengdu, Chongqing, Guilin, Yangshuo, Hangzhou, Suzhou, Nanjing, Harbin, Kunming, Lhasa, Hong Kong, Zhangjiajie.
+- Best first city: Beijing (3 days, $65-120/day, best Apr/May/Sep/Oct).
+- Budget range: $40-60 budget, $65-120 mid-range, $130+ premium per person per day.
+- Rail: high-speed trains connect all major cities; Beijing-Xi'an is about 4.5 hours; tickets open ~15 days ahead on 12306.
+- Visa: most travelers need a tourist visa; visa-free transit up to 144 hours exists in many cities and changes often.
+- Payments: Alipay or WeChat Pay with a foreign card works; set up before arrival.
+- Three classic rail routes: 7-day triangle (Beijing-Xi'an-Chengdu), 10-day Jiangnan loop (Shanghai-Suzhou-Hangzhou), 14-day panorama (adds Guilin and Hong Kong).
+
+## About this site
+
+- About: https://www.chinacitytravel.com/about/ - Who writes the site and how information is verified.
+- Contact: https://www.chinacitytravel.com/contact/ - Report an error or ask about the data.
+- Privacy: https://www.chinacitytravel.com/privacy/ - No accounts, no first-party cookies; anonymous GA4 analytics.
+- Terms: https://www.chinacitytravel.com/terms/ - Editorial disclaimer and limitations.
+
 ## Routes
 
 - Classic triangle: https://www.chinacitytravel.com/#routes - Beijing, Xi'an, Chengdu.

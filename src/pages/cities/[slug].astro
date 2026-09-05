@@ -4,6 +4,7 @@ import '@fontsource-variable/manrope';
 import '../../styles/global.css';
 import { cities } from '../../data/cities';
 import { cityPageExtras } from '../../data/cityPages';
+import { wikipediaUrls } from '../../data/wikipedia';
 
 export function getStaticPaths() {
   return Object.keys(cityPageExtras).map((slug) => ({ params: { slug } }));
@@ -69,6 +70,7 @@ const destinationSchema = {
   description: city.why,
   url: canonicalUrl,
   image: `https://www.chinacitytravel.com${city.image}`,
+  sameAs: wikipediaUrls[slug],
   geo: {
     '@type': 'GeoCoordinates',
     latitude: city.coords[1],
@@ -109,6 +111,10 @@ const articleSchema = {
     '@type': 'Organization',
     name: 'China City Explorer',
     url: 'https://www.chinacitytravel.com/',
+    sameAs: [
+      'https://github.com/jiusongvip/china-city',
+      'https://x.com/chinacitytravel',
+    ],
   },
 };
 ---
@@ -177,7 +183,7 @@ const articleSchema = {
           <a class="hover:text-[#161616]" href="/#cities">Cities</a>
           <a class="hover:text-[#161616]" href="/#compare">Compare</a>
           <a class="hover:text-[#161616]" href="/#routes">Routes</a>
-          <a class="hover:text-[#161616]" href="/#months">Months</a>
+          <a class="hover:text-[#161616]" href="/about/">About</a>
           <a class="hover:text-[#161616]" href="/#faq">FAQ</a>
         </nav>
         <a class="btn-primary !min-h-10 !px-4 !py-2.5 text-sm md:hidden" href="/#start">Plan a trip</a>
@@ -435,12 +441,13 @@ const articleSchema = {
           </p>
         </div>
         <nav aria-label="Footer navigation" class="flex flex-wrap gap-x-5 gap-y-3 text-sm font-semibold text-[#f7f7f4]/70">
+          <a class="hover:text-[#f7f7f4]" href="/about/">About</a>
+          <a class="hover:text-[#f7f7f4]" href="/contact/">Contact</a>
+          <a class="hover:text-[#f7f7f4]" href="/privacy/">Privacy</a>
+          <a class="hover:text-[#f7f7f4]" href="/terms/">Terms</a>
           <a class="hover:text-[#f7f7f4]" href="/#cities">Cities</a>
           <a class="hover:text-[#f7f7f4]" href="/#compare">Compare</a>
           <a class="hover:text-[#f7f7f4]" href="/#routes">Routes</a>
-          <a class="hover:text-[#f7f7f4]" href="/#months">Months</a>
-          <a class="hover:text-[#f7f7f4]" href="/#faq">FAQ</a>
-          <a class="hover:text-[#f7f7f4]" href="/#privacy">Privacy</a>
         </nav>
       </div>
       <div class="page-shell border-t border-[#f7f7f4]/15 py-5 text-xs leading-5 text-[#f7f7f4]/45">

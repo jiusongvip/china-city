@@ -1,0 +1,17 @@
+export const wikipediaUrls: Record<string, string> = {
+  beijing: 'https://en.wikipedia.org/wiki/Beijing',
+  shanghai: 'https://en.wikipedia.org/wiki/Shanghai',
+  xian: 'https://en.wikipedia.org/wiki/Xi%27an',
+  chengdu: 'https://en.wikipedia.org/wiki/Chengdu',
+  chongqing: 'https://en.wikipedia.org/wiki/Chongqing',
+  guilin: 'https://en.wikipedia.org/wiki/Guilin',
+  yangshuo: 'https://en.wikipedia.org/wiki/Yangshuo',
+  hangzhou: 'https://en.wikipedia.org/wiki/Hangzhou',
+  suzhou: 'https://en.wikipedia.org/wiki/Suzhou',
+  nanjing: 'https://en.wikipedia.org/wiki/Nanjing',
+  harbin: 'https://en.wikipedia.org/wiki/Harbin',
+  kunming: 'https://en.wikipedia.org/wiki/Kunming',
+  lhasa: 'https://en.wikipedia.org/wiki/Lhasa',
+  'hong-kong': 'https://en.wikipedia.org/wiki/Hong_Kong',
+  zhangjiajie: 'https://en.wikipedia.org/wiki/Zhangjiajie',
+};

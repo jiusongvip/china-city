@@ -109,19 +109,9 @@ export const faqs: Faq[] = [
       'Beijing is the safest first stop for most travelers: it combines imperial history, world-famous landmarks, good infrastructure, and easy rail connections to Xi\u2019an and Shanghai. If you prefer modern city energy over history, start with Shanghai instead.',
   },
   {
-    question: 'How many cities are in China?',
-    answer:
-      'China has 293 prefecture-level cities and nearly 1,000 county-level cities, but only a small set matters for first-time travelers. This guide covers 15 cities that combine world-class sights, high-speed rail access, and solid tourist infrastructure. If you are planning a first trip, start with Beijing, Shanghai, and Xi\u2019an, then add a nature stop like Guilin or Zhangjiajie.',
-  },
-  {
     question: 'What are the major cities in China?',
     answer:
       'The cities most travelers actually visit are Beijing, Shanghai, Xi\u2019an, Chengdu, Chongqing, Guangzhou, Shenzhen, Hangzhou, Suzhou, Nanjing, and Hong Kong. Beijing and Shanghai anchor most first trips; Xi\u2019an and Chengdu are the strongest second stops; and the Shanghai-Suzhou-Hangzhou loop is the most time-efficient route in the country.',
-  },
-  {
-    question: 'What is the best city to visit in China?',
-    answer:
-      'There is no single best city, but Beijing is the strongest first choice for most travelers: the Forbidden City, the Great Wall, and the Temple of Heaven are unmatched, and its rail hub makes it the easiest place to start a multi-city route. Choose Shanghai for modern energy and food, Chengdu for pandas and a relaxed pace, and Guilin or Zhangjiajie for nature.',
   },
   {
     question: 'How many cities can I see in 10 days?',
@@ -159,19 +149,9 @@ export const faqs: Faq[] = [
       'Yes. Download Alipay or WeChat Pay and link an international card before you arrive; both now support foreign cards. Keep a small amount of cash as backup, and confirm your roaming plan or buy a local SIM with data.',
   },
   {
-    question: 'Do I need to speak Chinese to travel in China?',
-    answer:
-      'No, but it helps. Major cities have English signage on the metro and at top attractions, and translation apps fill most gaps. Download an offline translation app and save your hotel address in Chinese characters.',
-  },
-  {
     question: 'Which Chinese city is best for families?',
     answer:
       'Chengdu is the easiest family city thanks to pandas, casual food, and a relaxed pace. Beijing works well for kids who love castles and the Great Wall, while Hong Kong offers theme parks and English-friendly logistics.',
-  },
-  {
-    question: 'Which city is best in winter?',
-    answer:
-      'Harbin is the definitive winter destination for its Ice and Snow World festival. If you want to avoid the cold, head to Hong Kong, Kunming, or the mild south, which stay comfortable from December to February.',
   },
   {
     question: 'How far in advance should I book attractions and trains?',
@@ -182,91 +162,6 @@ export const faqs: Faq[] = [
     question: 'Is it safe to travel in China?',
     answer:
       'China is generally very safe for tourists, with low street crime in major cities. The main risks are pickpocketing in crowded areas and traffic when crossing roads. Keep your passport with you for hotels and train travel.',
-  },
-  {
-    question: 'What is the 144-hour visa-free transit?',
-    answer:
-      'Many cities allow citizens of certain countries to stay visa-free for up to 144 hours (6 days) when transiting to a third country. The list of eligible nationalities and cities changes, so verify current rules before booking.',
-  },
-  {
-    question: 'How many days do I need in Beijing?',
-    answer:
-      'Three days is the sweet spot. Day 1 for Tiananmen and the Forbidden City, day 2 for the Great Wall, and day 3 for the Temple of Heaven before you move on. Two days works if you skip one major site.',
-  },
-  {
-    question: 'How many days do I need in Shanghai?',
-    answer:
-      'Two to three nights. Day 1 for the Bund and Nanjing Road, day 2 for Yu Garden, the French Concession, and the Shanghai Tower, and an optional third day for a side trip to Suzhou or Hangzhou.',
-  },
-  {
-    question: 'Is Xi\u2019an worth visiting?',
-    answer:
-      'Yes, if you care about history. The Terracotta Army is one of China\u2019s greatest sights, and the bikeable city wall is a rare treat. Skip it only if you have no time to stop between Beijing and the west.',
-  },
-  {
-    question: 'Is Chengdu worth visiting?',
-    answer:
-      'Yes, especially for pandas and food. It is the most relaxed major city in China and the gateway to Tibet. If you dislike spicy food or have no interest in pandas, spend your days elsewhere.',
-  },
-  {
-    question: 'How do I plan a 7-day China trip?',
-    answer:
-      'The classic 7-day triangle is Beijing 3 days, Xi\u2019an 2 days, and Chengdu 2 days, connected by high-speed rail. If you prefer a single region, do Shanghai 3 days, Suzhou 2, and Hangzhou 2 instead.',
-  },
-  {
-    question: 'Is China good for solo travelers?',
-    answer:
-      'Yes. China is safe, public transport is excellent, and solo travel is common. The main challenge is language, so download a translation app, save hotel addresses in Chinese, and set up mobile payment before you arrive.',
-  },
-  {
-    question: 'What should I pack for a China trip?',
-    answer:
-      'Comfortable walking shoes, a portable power bank, any prescription medicines, a universal adapter, and a little cash. Download Alipay or WeChat Pay, a VPN if you need Western apps, and a translation app before you leave.',
-  },
-  {
-    question: 'Is China good for a honeymoon?',
-    answer:
-      'Yes. Shanghai, Hangzhou, and Suzhou make a polished, low-stress honeymoon loop with good hotels and short rail rides. For something more dramatic, add Guilin\u2019s river scenery or finish in Hong Kong.',
-  },
-  {
-    question: 'How do I get from Beijing to Xi\u2019an?',
-    answer:
-      'The high-speed train takes about 4.5 hours and runs frequently all day. Book on the official 12306 platform or a trusted agent; aim for a morning train so you arrive with the afternoon free.',
-  },
-  {
-    question: 'How do I book train tickets in China as a foreigner?',
-    answer:
-      'Use the official China Railway 12306 app (English version available) or a reputable booking service like Trip.com. Tickets open for sale about 15 days ahead and sell out fast during national holidays, so book early.',
-  },
-  {
-    question: 'How do I set up Alipay or WeChat Pay as a foreigner?',
-    answer:
-      'Download Alipay or WeChat, register with your passport, and link an international Visa or Mastercard. Both apps now accept foreign cards for most payments. Set this up before you arrive, since you will need it for almost everything.',
-  },
-  {
-    question: 'How much does a two-week China trip cost?',
-    answer:
-      'Budget travelers can do two weeks for $700-900, mid-range travelers $1,200-1,600, and premium trips $2,000+. The biggest variables are hotels, domestic flights, and whether you use private guides.',
-  },
-  {
-    question: 'What apps should I download before visiting China?',
-    answer:
-      'Alipay or WeChat Pay for payments, a translation app (offline mode), a maps app like Apple Maps or Amap, and a VPN if you need Google or WhatsApp. Download everything before you arrive, while you still have access.',
-  },
-  {
-    question: 'Is China safe for female solo travelers?',
-    answer:
-      'Yes. China is generally very safe, and female solo travel is common in major cities. The main risks are the usual ones: keep an eye on drinks, avoid isolated areas late at night, and save your hotel address in Chinese.',
-  },
-  {
-    question: 'What is the best way to see the Great Wall?',
-    answer:
-      'Take a cable car or chairlift up at Mutianyu, walk along the restored section, and come down by toboggan. Mutianyu is quieter than Badaling and gives the same sweeping views with far fewer crowds.',
-  },
-  {
-    question: 'Do I need travel insurance for China?',
-    answer:
-      'It is not required, but it is strongly recommended. Hospital care for foreigners can be expensive, and insurance covers cancellations, delays, and medical evacuation. Check that your policy covers China and any high-altitude areas like Tibet.',
   },
 ];
 
