@@ -156,7 +156,13 @@ const articleSchema = {
     <meta name="description" content={pageDescription} />
     <link rel="canonical" href={canonicalUrl} />
     <link rel="sitemap" href="https://www.chinacitytravel.com/sitemap-index.xml" />
-    <link rel="preload" as="image" href={city.image} />
+    <link
+      rel="preload"
+      as="image"
+      imagesrcset={`${city.image.replace('.webp', '-480w.webp')} 480w, ${city.image} 640w`}
+      imagesizes="(min-width: 1024px) 45vw, 92vw"
+      fetchpriority="high"
+    />
     <meta name="robots" content="index,follow" />
     <meta property="og:type" content="article" />
     <meta property="og:title" content={pageTitle} />
@@ -218,11 +224,13 @@ const articleSchema = {
             <div class="relative aspect-[4/3] w-full overflow-hidden rounded-2xl border border-[#d9d8d2]">
               <img
                 src={city.image}
+                srcset={`${city.image.replace('.webp', '-480w.webp')} 480w, ${city.image} 640w`}
+                sizes="(min-width: 1024px) 45vw, 92vw"
                 alt={`${city.name} travel scene - ${city.topAttraction}`}
                 class="absolute inset-0 h-full w-full object-cover"
                 fetchpriority="high"
-                width="960"
-                height="720"
+                width="640"
+                height="480"
               />
               <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/60 to-transparent p-5 text-white">
                 <p class="text-sm font-bold">{city.name}</p>
@@ -390,6 +398,8 @@ const articleSchema = {
                 <div class="relative aspect-[16/9] overflow-hidden">
                   <img
                     src={related.image}
+                    srcset={`${related.image.replace('.webp', '-480w.webp')} 480w, ${related.image} 640w`}
+                    sizes="(min-width: 1024px) 31vw, (min-width: 640px) 46vw, 92vw"
                     alt={`${related.name} travel scene - ${related.topAttraction}`}
                     class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"
                     loading="lazy"

@@ -259,7 +259,13 @@ const mapRoutes = [
     />
     <link rel="canonical" href={canonicalUrl} />
     <link rel="sitemap" href="https://www.chinacitytravel.com/sitemap-index.xml" />
-    <link rel="preload" as="image" href="/images/hero-great-wall.webp" />
+    <link
+      rel="preload"
+      as="image"
+      imagesrcset="/images/hero-great-wall-480w.webp 480w, /images/hero-great-wall-768w.webp 768w, /images/hero-great-wall.webp 960w"
+      imagesizes="(min-width: 1024px) 45vw, 92vw"
+      fetchpriority="high"
+    />
     <meta name="robots" content="index,follow" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="China City Guide 2026: Compare & Plan the Best Cities" />
@@ -326,6 +332,8 @@ const mapRoutes = [
           <div class="relative aspect-[4/3] w-full overflow-hidden rounded-2xl border border-[#d9d8d2]">
             <img
               src={hero.image}
+              srcset={`/images/hero-great-wall-480w.webp 480w, /images/hero-great-wall-768w.webp 768w, /images/hero-great-wall.webp 960w`}
+              sizes="(min-width: 1024px) 45vw, 92vw"
               alt="The Great Wall of China snaking over green mountain ridges at sunrise"
               class="absolute inset-0 h-full w-full object-cover"
               fetchpriority="high"
@@ -357,7 +365,15 @@ const mapRoutes = [
       <section id="start" class="section-pad border-t border-[#d9d8d2]">
         <div class="page-shell grid gap-6 lg:grid-cols-[0.85fr_1.15fr] lg:items-stretch">
           <div class="card overflow-hidden">
-            <img src="/images/beijing-forbidden-city.webp" alt="The Forbidden City in Beijing with red walls and golden roofs at sunrise" class="aspect-[4/3] h-full w-full object-cover" width="640" height="480" />
+            <img
+              src="/images/beijing-forbidden-city.webp"
+              srcset="/images/beijing-forbidden-city-480w.webp 480w, /images/beijing-forbidden-city.webp 640w"
+              sizes="(min-width: 1024px) 42vw, 92vw"
+              alt="The Forbidden City in Beijing with red walls and golden roofs at sunrise"
+              class="aspect-[4/3] h-full w-full object-cover"
+              width="640"
+              height="480"
+            />
           </div>
           <div class="card p-6 md:p-8">
             <p class="eyebrow mb-6">The verdict</p>
@@ -532,7 +548,17 @@ const mapRoutes = [
           <div id="city-grid" class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {cities.map((city) => (
               <a href={cityHref(city.slug)} class="city-card card group overflow-hidden" data-tags={city.tags.join(' ')} data-avoid={city.avoid.join(' ')}>
-                <img src={city.image} alt={`${city.name} travel scene - ${city.topAttraction}`} class="aspect-[4/3] w-full object-cover transition-transform duration-300 group-hover:scale-[1.03]" loading="lazy" decoding="async" width="640" height="480" />
+                <img
+                  src={city.image}
+                  srcset={`${city.image.replace('.webp', '-480w.webp')} 480w, ${city.image} 640w`}
+                  sizes="(min-width: 1280px) 23vw, (min-width: 1024px) 31vw, (min-width: 640px) 46vw, 92vw"
+                  alt={`${city.name} travel scene - ${city.topAttraction}`}
+                  class="aspect-[4/3] w-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"
+                  loading="lazy"
+                  decoding="async"
+                  width="640"
+                  height="480"
+                />
                 <div class="p-5">
                   <div class="flex items-start justify-between gap-3">
                     <div>
