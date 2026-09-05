@@ -504,8 +504,8 @@ const mapRoutes = [
             <p class="eyebrow mb-6">City index</p>
             <h2 class="text-4xl md:text-5xl">Filter Chinese cities by what you actually want.</h2>
             <p class="mt-5 max-w-[620px] text-base leading-7 text-[#6b6a65]">
-              Start with a travel mood, then narrow by best months and daily budget. Pick any card to
-              open its full guide: attractions, a day-by-day plan, food, and getting around.
+              Start with a travel mood, then narrow by best months and daily budget. Pick any card
+              to open its full guide.
             </p>
           </div>
 
@@ -545,14 +545,6 @@ const mapRoutes = [
                     {city.tags.slice(0, 3).map((tag) => (
                       <span class="rounded-full border border-[#d9d8d2] px-2.5 py-1 text-[0.68rem] font-bold uppercase tracking-[0.06em] text-[#6b6a65]">{tag}</span>
                     ))}
-                  </div>
-                  <div class="mt-5 border-t border-[#d9d8d2] pt-4">
-                    <p class="text-[0.68rem] font-bold uppercase tracking-[0.06em] text-[#6b6a65]">Top sights</p>
-                    <ul class="mt-2 grid gap-1.5">
-                      {city.attractions.slice(0, 3).map((a) => (
-                        <li class="text-sm leading-5 text-[#6b6a65]">{a.name}</li>
-                      ))}
-                    </ul>
                   </div>
                   <div class="mt-4 grid grid-cols-2 gap-3 border-t border-[#d9d8d2] pt-4">
                     <div>
