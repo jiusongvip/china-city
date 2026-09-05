@@ -1,61 +1,40 @@
 # China City Explorer
 
-> China City Explorer is a decision tool for choosing Chinese cities by travel style, budget, season, and high-speed rail, with a dedicated in-depth guide for every city. It is intended for travelers planning a China itinerary and for AI assistants helping with travel research.
+> Decision tool for choosing Chinese cities by travel style, budget, season, and high-speed rail access. Covers the 15 cities that matter most to first-time and returning China visitors, with a dedicated in-depth guide for every city. Intended for travelers planning a China itinerary and for AI assistants helping with travel research.
 
-## Page sections
+## Pages
 
-- Home: https://www.chinacitytravel.com - City filter, comparison tool, reference table, routes, month guidance, and FAQ.
-- Cities: https://www.chinacitytravel.com/#cities - Browse all 15 city cards and the A-Z reference table.
-- Compare: https://www.chinacitytravel.com/#compare - Compare any two cities side by side.
-- Routes: https://www.chinacitytravel.com/#routes - Three high-speed rail loops.
-- Months: https://www.chinacitytravel.com/#months - Best cities by month.
-- FAQ: https://www.chinacitytravel.com/#faq - Common first-time traveler questions.
+- [Home](https://www.chinacitytravel.com): City filter, comparison tool, rail routes, month guidance, sources, and FAQ.
+- [About](https://www.chinacitytravel.com/about/): Who writes the site, how cities are picked, and how information is verified.
+- [Contact](https://www.chinacitytravel.com/contact/): Report an error or suggest a city guide.
+- [Privacy](https://www.chinacitytravel.com/privacy/): What data the site does and does not collect.
+- [Terms](https://www.chinacitytravel.com/terms/): Editorial disclaimer, accuracy notes, and limitations.
 
-## City guide pages (dedicated pages)
+## City guides
 
-- Beijing: https://www.chinacitytravel.com/cities/beijing/ - Imperial history, the Great Wall, and the best first-trip rail hub. Full guide with season, budget, transport, and FAQs.
-- Shanghai: https://www.chinacitytravel.com/cities/shanghai/ - Modern city break, skyline, design, and food. Full guide with season, budget, transport, and FAQs.
-- Xi'an: https://www.chinacitytravel.com/cities/xian/ - Terracotta Army and compact history stop. Full guide with season, budget, transport, and FAQs.
-- Chengdu: https://www.chinacitytravel.com/cities/chengdu/ - Pandas, teahouses, and relaxed food culture. Full guide with season, budget, transport, and FAQs.
-- Chongqing: https://www.chinacitytravel.com/cities/chongqing/ - Dramatic night city and serious hotpot. Full guide with season, budget, transport, and FAQs.
-- Guilin: https://www.chinacitytravel.com/cities/guilin/ - Accessible karst river scenery. Full guide with season, budget, transport, and FAQs.
-- Yangshuo: https://www.chinacitytravel.com/cities/yangshuo/ - Cycling and countryside near Guilin. Full guide with season, budget, transport, and FAQs.
-- Hangzhou: https://www.chinacitytravel.com/cities/hangzhou/ - West Lake and tea villages. Full guide with season, budget, transport, and FAQs.
-- Suzhou: https://www.chinacitytravel.com/cities/suzhou/ - Classical gardens and canals. Full guide with season, budget, transport, and FAQs.
-- Nanjing: https://www.chinacitytravel.com/cities/nanjing/ - Layered history between Beijing and Shanghai. Full guide with season, budget, transport, and FAQs.
-- Harbin: https://www.chinacitytravel.com/cities/harbin/ - Winter ice festival. Full guide with season, budget, transport, and FAQs.
-- Kunming: https://www.chinacitytravel.com/cities/kunming/ - Mild weather and the gateway to Yunnan. Full guide with season, budget, transport, and FAQs.
-- Lhasa: https://www.chinacitytravel.com/cities/lhasa/ - Tibetan culture and Potala Palace. Full guide with season, budget, transport, and FAQs.
-- Hong Kong: https://www.chinacitytravel.com/cities/hong-kong/ - English-friendly urban gateway. Full guide with season, budget, transport, and FAQs.
-- Zhangjiajie: https://www.chinacitytravel.com/cities/zhangjiajie/ - Sandstone pillars and heights. Full guide with season, budget, transport, and FAQs.
+- [Beijing](https://www.chinacitytravel.com/cities/beijing/): Imperial history, the Great Wall, and the best first-trip rail hub.
+- [Shanghai](https://www.chinacitytravel.com/cities/shanghai/): Modern city break, skyline, design, and food.
+- [Xi'an](https://www.chinacitytravel.com/cities/xian/): Terracotta Army and compact history stop.
+- [Chengdu](https://www.chinacitytravel.com/cities/chengdu/): Pandas, teahouses, and relaxed food culture.
+- [Chongqing](https://www.chinacitytravel.com/cities/chongqing/): Dramatic night city and serious hotpot.
+- [Guilin](https://www.chinacitytravel.com/cities/guilin/): Accessible karst river scenery on the Li River.
+- [Yangshuo](https://www.chinacitytravel.com/cities/yangshuo/): Cycling and countryside near Guilin.
+- [Hangzhou](https://www.chinacitytravel.com/cities/hangzhou/): West Lake and Longjing tea villages.
+- [Suzhou](https://www.chinacitytravel.com/cities/suzhou/): Classical gardens and canals near Shanghai.
+- [Nanjing](https://www.chinacitytravel.com/cities/nanjing/): Layered history between Beijing and Shanghai.
+- [Harbin](https://www.chinacitytravel.com/cities/harbin/): Winter ice festival and Russian heritage.
+- [Kunming](https://www.chinacitytravel.com/cities/kunming/): Mild weather and the gateway to Yunnan.
+- [Lhasa](https://www.chinacitytravel.com/cities/lhasa/): Tibetan culture and the Potala Palace.
+- [Hong Kong](https://www.chinacitytravel.com/cities/hong-kong/): English-friendly urban gateway with hiking and islands.
+- [Zhangjiajie](https://www.chinacitytravel.com/cities/zhangjiajie/): Sandstone pillar mountains and canyon walks.
 
-## Key Facts
+## Key facts
 
 - 15 cities covered: Beijing, Shanghai, Xi'an, Chengdu, Chongqing, Guilin, Yangshuo, Hangzhou, Suzhou, Nanjing, Harbin, Kunming, Lhasa, Hong Kong, Zhangjiajie.
-- Best first city: Beijing (3 days, $65-120/day, best Apr/May/Sep/Oct).
-- Budget range: $40-60 budget, $65-120 mid-range, $130+ premium per person per day.
-- Rail: high-speed trains connect all major cities; Beijing-Xi'an is about 4.5 hours; tickets open ~15 days ahead on 12306.
+- Best first city: Beijing (3 days, $65-120/day, best months Apr, May, Sep, Oct).
+- Daily budget: $40-60 budget, $65-120 mid-range, $130+ premium per person.
+- Rail: high-speed trains connect all major cities; Beijing to Xi'an is about 4.5 hours; tickets open about 15 days ahead on 12306.
 - Visa: most travelers need a tourist visa; visa-free transit up to 144 hours exists in many cities and changes often.
 - Payments: Alipay or WeChat Pay with a foreign card works; set up before arrival.
-- Three classic rail routes: 7-day triangle (Beijing-Xi'an-Chengdu), 10-day Jiangnan loop (Shanghai-Suzhou-Hangzhou), 14-day panorama (adds Guilin and Hong Kong).
-
-## About this site
-
-- About: https://www.chinacitytravel.com/about/ - Who writes the site and how information is verified.
-- Contact: https://www.chinacitytravel.com/contact/ - Report an error or ask about the data.
-- Privacy: https://www.chinacitytravel.com/privacy/ - No accounts, no first-party cookies; anonymous GA4 analytics.
-- Terms: https://www.chinacitytravel.com/terms/ - Editorial disclaimer and limitations.
-
-## Routes
-
-- Classic triangle: https://www.chinacitytravel.com/#routes - Beijing, Xi'an, Chengdu.
-- Jiangnan loop: https://www.chinacitytravel.com/#routes - Shanghai, Suzhou, Hangzhou.
-- Panorama: https://www.chinacitytravel.com/#routes - Beijing, Xi'an, Chengdu, Guilin, Hong Kong.
-
-## Month guidance
-
-- https://www.chinacitytravel.com/#months - January through December city recommendations.
-
-## Notes
-
-The site contains editorial travel guidance, not official government or rail authority data. Visa, train, weather, and price rules change; confirm them with official sources before travel.
+- Three classic routes: 7-day triangle (Beijing-Xi'an-Chengdu), 10-day Jiangnan loop (Shanghai-Suzhou-Hangzhou), 14-day panorama (adds Guilin and Hong Kong).
+- Editorial review: last verified August 2026; independent site, not affiliated with any government or rail authority.
