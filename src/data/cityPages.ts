@@ -211,7 +211,7 @@ export const cityPageExtras: Record<string, CityPageExtra> = {
   },
   yangshuo: {
     intro:
-      'Yangshuo is where the Guilin postcard is actually taken: limestone peaks, the Yulong River, bamboo rafts, and bike paths through rice paddies. It is a small town built around one thing \u2014 the scenery \u2014 and it delivers it better than anywhere else in China at this effort level.',
+      'Yangshuo is where the Guilin postcard is actually taken: limestone peaks, the Yulong River, bamboo rafts, and bike paths through rice paddies. It is a small town built around one thing \u2014 the scenery \u2014 and it delivers it better than anywhere else in China at this effort level. It is also the easiest place in China to build a family outdoor adventure: kayaking on the Yulong River, cycling the Ten-Mile Gallery and Yulong Valley, and a via ferrata climb on Moon Hill all sit within a few kilometres of West Street.',
     seasonGuide:
       'April-May and September-October are perfect: 18-28\u00b0C, green paddies, and clear river light. Summer is hot and humid with afternoon thunderstorms; the morning light is still excellent. Winter is mild and quiet, with the lowest prices and the mistiest karst views \u2014 a photographer favorite. October paddies turn golden, which is the most photogenic stretch of the year.',
     budgetNote:
@@ -239,6 +239,21 @@ export const cityPageExtras: Record<string, CityPageExtra> = {
         question: 'When is Yangshuo most crowded?',
         answer:
           'The national holidays (first week of October, early May, Spring Festival) pack West Street wall-to-wall. The busiest ordinary months are May and October. For quiet mornings, go in April, June, or November \u2014 the scenery is nearly as good and the town breathes.',
+      },
+      {
+        question: 'Can you kayak in Yangshuo?',
+        answer:
+          'Yes, and it is one of the most popular things to do here. The Yulong River is the main kayaking stretch \u2014 calm, slow-moving, and 6-10 km sections that take 2-3 hours with no whitewater. No experience is needed: sit-on-top kayaks, life jackets, and a dry bag are provided. Operators at Yulong Bridge, Jiuxian, and the old bridge run half-day trips for about $25-40 per person; book a day ahead in May and October.',
+      },
+      {
+        question: 'Is Yangshuo good for a family outdoor adventure?',
+        answer:
+          'Yes \u2014 it is one of the easiest places in China to build an active family trip. The Ten-Mile Gallery and Yulong Valley are flat and well-suited to children on bikes or in a sidecar. Older kids (10+) can do the Moon Hill via ferrata, and the Yulong bamboo rafts accept children above a certain height. Most guesthouses will arrange a driver for the day, and the activity operators speak enough English to handle bookings.',
+      },
+      {
+        question: 'What is the via ferrata in Yangshuo?',
+        answer:
+          'A protected climbing route on the cliff face of Moon Hill, the limestone arch on the western edge of town. Steel cables, rungs, and a harness keep you attached the whole way, so no climbing experience is needed \u2014 it is the most beginner-friendly way to do a real rock climb in China. The route takes 1.5-2 hours, ends with a rappel or zip line, and runs in all weather except heavy rain. Book through your guesthouse or any tour shop on West Street; bring closed-toe shoes.',
       },
     ],
   },
@@ -339,11 +354,16 @@ export const cityPageExtras: Record<string, CityPageExtra> = {
         answer:
           'Duck, in every form: saltwater duck (served cold, the signature), duck-blood vermicelli soup, and roast duck. Xiaolongbao (soup dumplings) are excellent here too. Fuzimiao is the food neighborhood \u2014 go in the evening for the lantern-lit snack streets by the Qinhuai River.',
       },
+      {
+        question: 'What are the must-see historical sites in Nanjing?',
+        answer:
+          'Six make the shortlist: the Sun Yat-sen Mausoleum (free, 392 steps, the city\u2019s signature sight), the Ming Xiaoling Tomb (UNESCO, quieter than the Forbidden City), the Confucian Temple (Fuzimiao) and Qinhuai riverfront, the Nanjing City Wall (the longest city wall in the world, walkable on a stretch near Zhonghua Gate), the Presidential Palace (republican-era, the only one of its kind in China), and the Nanjing Massacre Memorial (free, sobering, allot two hours). Two days covers all six at a sensible pace.',
+      },
     ],
   },
   harbin: {
     intro:
-      'Harbin is China\u2019s winter city: the world\u2019s largest ice and snow festival, Russian-influenced architecture, and a frozen river you can walk on. It is a completely different version of China \u2014 best visited between late December and late February, and worth the cold.',
+      'Harbin is China\u2019s winter city \u2014 known internationally as the Ice City \u2014 and home to the world\u2019s largest ice and snow festival, Russian-influenced architecture, and a frozen river you can walk on. It is a completely different version of China, worth visiting between late December and late February. The best time to visit Harbin is early January for the freshest ice sculptures, or late February for lower prices and thinner crowds.',
     seasonGuide:
       'The ice festival runs roughly late December to late February, and the city is at its peak in January. Temperatures sit at -15\u00b0C to -25\u00b0C, so this is a winter-only destination \u2014 outside the festival months, Harbin is a pleasant but unremarkable northern city. Go in early January for the freshest ice sculptures, or late February for lower prices and smaller crowds.',
     budgetNote:
@@ -371,6 +391,21 @@ export const cityPageExtras: Record<string, CityPageExtra> = {
         question: 'What else is there besides the Ice and Snow World?',
         answer:
           'The full winter circuit: Sun Island for the snow-sculpture festival (daytime), the frozen Songhua River for ice slides and horse-drawn sleighs, Central Street for the architecture and snacks, and Saint Sophia Cathedral for photos. Two nights covers everything; a third is only needed if you add a day trip like the Yabuli ski resort.',
+      },
+      {
+        question: 'Why is Harbin called the Ice City?',
+        answer:
+          'Because the winter lasts five months and the average January temperature is -19\u00b0C. The nickname \u201cBingcheng\u201d (\u51b0\u57ce, Ice City) is a century old, from the time Harbin was a Russian-built city on the Chinese Eastern Railway. The Ice and Snow World festival \u2014 the world\u2019s largest \u2014 is built from blocks cut out of the frozen Songhua River every year, which is the part most visitors actually come to see.',
+      },
+      {
+        question: 'Is Harbin cold all year round?',
+        answer:
+          'No. January is brutally cold (-15 to -25\u00b0C) but July averages 23\u00b0C and is genuinely pleasant \u2014 Harbin is a popular summer escape for northeast Chinese. The city is busy year-round; the cold is concentrated in December through February, which is also when the festival runs and most international visitors come.',
+      },
+      {
+        question: 'What is the best time to visit Harbin?',
+        answer:
+          'Late December to late February, peaking in January. Early January has the freshest ice sculptures (the festival opens around January 5); late February has thinner crowds and 20-30% cheaper hotels. Avoid the Spring Festival week (late January or mid-February depending on the year) \u2014 it is the worst combination of cold and crowds.',
       },
     ],
   },
@@ -503,6 +538,16 @@ export const cityPageExtras: Record<string, CityPageExtra> = {
         question: 'When does the park have the fewest crowds?',
         answer:
           'November-March is the quiet window: fewer tour groups, cheaper hotels, and occasional snow. The trade-off is cold and occasional fog. Within the busy months, go on a weekday, enter through the less popular Wulingyuan gate, and ride the early shuttles before 9am \u2014 the crowds cluster around the main viewpoints by midday.',
+      },
+      {
+        question: 'What is the best time to visit Zhangjiajie?',
+        answer:
+          'April-May and September-October, when the pillars are most visible. The park is famous for mist, which can hide the peaks entirely; aim for the day after a rain, when the mist sits between the pillars rather than on top of them. Avoid national holidays (first week of October, early May, Spring Festival) and weekends \u2014 the cable-car queues stack to over an hour. Winter is cold but quiet, with occasional snow on the summits and a third off hotel rates.',
+      },
+      {
+        question: 'Is Zhangjiajie really the Avatar mountains?',
+        answer:
+          'Yes \u2014 the floating Hallelujah Mountains in Avatar were modelled on the Yuanjiajie quartz-sandstone pillars in the National Forest Park. The exact spires are signposted inside the park. The pillars are 200-400 metres tall and predate the film by several hundred million years; the movie just made them famous. If you have only seen the film, the real thing is taller, greener, and far more numerous than CGI suggested.',
       },
     ],
   },

@@ -36,6 +36,29 @@ const pageTitles: Record<string, string> = {
 };
 const pageTitle = pageTitles[slug] || `${city.name} Travel Guide 2026`;
 
+// Per-city H1 (matches pageTitle but adds long-tail intent phrases so H1 actually
+// matches the queries GSC shows the page for).
+const pageHeadlines: Record<string, string> = {
+  beijing: 'Beijing Travel Guide 2026: Great Wall, Itinerary & Costs',
+  shanghai: 'Shanghai Travel Guide 2026: Itinerary, Costs & Day Trips',
+  xian: "Xi'an Travel Guide 2026: Terracotta Army & Costs",
+  chengdu: 'Chengdu Travel Guide 2026: Pandas, Food & Itinerary',
+  chongqing: 'Chongqing Travel Guide 2026: Night Views, Hotpot & Costs',
+  guilin: 'Guilin & Yangshuo Travel Guide 2026: Li River & Karst Peaks',
+  yangshuo:
+    'Yangshuo Travel Guide 2026: Karst Peaks, Cycling, Kayaking & Family Adventures',
+  hangzhou: 'Hangzhou Travel Guide 2026: West Lake & Longjing Tea',
+  suzhou: 'Suzhou Travel Guide 2026: Classical Gardens & Canals',
+  nanjing: 'Nanjing Travel Guide 2026: History, Mausoleums & Historical Sites',
+  harbin: 'Harbin Travel Guide 2026: Ice City, Ice Festival & When to Go',
+  kunming: 'Kunming Travel Guide 2026: Stone Forest & Yunnan Gateway',
+  lhasa: 'Lhasa Travel Guide 2026: Potala Palace & Tibet Permits',
+  'hong-kong': 'Hong Kong Travel Guide 2026: Skyline, Food & Day Trips',
+  zhangjiajie:
+    'Zhangjiajie Travel Guide 2026: Avatar Mountains, Itinerary & Best Time to Visit',
+};
+const pageHeadline = pageHeadlines[slug] || pageTitle;
+
 const pageDescription = `Plan ${city.name}: a ${city.days}-day itinerary, $${city.budget.replace('$', '')}/day budget, best months (${city.bestMonths}), top attractions, where to stay, what to eat, and rail access.`;
 
 const quickFacts = [
@@ -210,7 +233,7 @@ const articleSchema = {
           <div class="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
             <div>
               <p class="eyebrow mb-6">{city.region} &middot; {city.pinyin}</p>
-              <h1 class="text-5xl md:text-6xl">{city.name} Travel Guide</h1>
+              <h1 class="text-5xl md:text-6xl">{pageHeadline}</h1>
               <p class="mt-5 max-w-[560px] text-base leading-7 text-[#6b6a65] md:text-lg">{extra.intro}</p>
               <div class="mt-6 rounded-2xl border border-[#d9d8d2] bg-white p-4">
                 <p class="text-xs font-bold uppercase tracking-[0.08em] text-[#6b6a65]">The verdict</p>
@@ -271,7 +294,7 @@ const articleSchema = {
           </div>
           <div>
             <p class="eyebrow mb-4">Season guide</p>
-            <h2 class="text-3xl md:text-4xl">When to go.</h2>
+            <h2 class="text-3xl md:text-4xl">Best time to visit {city.name}.</h2>
             <p class="mt-5 text-base leading-7 text-[#6b6a65]">{extra.seasonGuide}</p>
             <div class="mt-5 rounded-xl bg-[#161616] p-5 text-[#f7f7f4]">
               <p class="text-xs font-bold uppercase tracking-[0.08em] text-[#f7f7f4]/60">Sweet spot</p>

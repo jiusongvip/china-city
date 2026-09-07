@@ -163,12 +163,22 @@ export const faqs: Faq[] = [
     answer:
       'China is generally very safe for tourists, with low street crime in major cities. The main risks are pickpocketing in crowded areas and traffic when crossing roads. Keep your passport with you for hotels and train travel.',
   },
+  {
+    question: 'How does the 144-hour visa-free transit work?',
+    answer:
+      'You arrive at one of 24 designated entry ports (Beijing, Shanghai, Guangzhou, Chengdu, Xi\u2019an, and others), stay up to 144 hours (6 days), and exit from a different approved port in the same region. It is open to passport holders from around 55 countries including the US, UK, Canada, Australia, and most of the EU. You need a confirmed onward ticket to a third country, and the 144-hour clock starts at your first port of entry. Confirm eligibility and your entry port on the National Immigration Administration site before booking \u2014 rules update without much notice.',
+  },
+  {
+    question: 'Do I qualify for the 144-hour visa-free transit?',
+    answer:
+      'You need three things: a passport from one of the eligible countries (US, UK, Canada, Australia, most EU, and around 50 others), a confirmed onward ticket to a third country or region, and arrival at one of the 24 designated entry ports. Hong Kong, Macau, and Taiwan count as separate regions for this purpose. The transit has to be reasonable \u2014 you cannot just sit at a port for six days. Confirm on the National Immigration Administration site, which is updated whenever the rules change.',
+  },
 ];
 
 export const prepItems: PrepItem[] = [
   {
     title: 'Visa & entry',
-    body: 'Most nationalities need a tourist visa (L visa), but visa-free transit and regional waivers change often. Check the official National Immigration Administration page for your nationality and current rules before booking flights.',
+    body: 'Most nationalities need a tourist visa (L visa), but China\u2019s 144-hour visa-free transit covers around 55 countries at 24 designated entry ports (including Beijing PEK/PKX, Shanghai PVG/SHA, Guangzhou CAN, Chengdu TFU, and Xi\u2019an XIY). The clock starts at the first port, lets you travel onward within the approved region for up to 6 days, and exits at a different port. Confirm your passport qualifies on the National Immigration Administration site before booking, since rules update without much notice.',
   },
   {
     title: 'Payment',
